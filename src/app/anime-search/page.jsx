@@ -14,6 +14,7 @@ export default function Page() {
   const [selectedAnime, setSelectedAnime] = useState(null);
   const [headerBg, setHeaderBg] = useState(false);
   const [searchData, setSearchData] = useState(null);
+  let query = searchParams.get("q")
   async function findAnimeName() {
     const value = inputRef.current.value;
     navigate(`/result?q=${encodeURIComponent(value)}`);
@@ -25,7 +26,7 @@ export default function Page() {
   useEffect(() => {
     const findAnime = async () => {
       const response = await fetch(
-        `${apiUrl}/anime?filter[text]=${searchParams.get("q")}`
+        `${apiUrl}/anime?filter[text]=${query}&page[limit]=20&page[offset]=0`
       );
       if (response.ok) {
         const json = await response.json();
@@ -33,7 +34,7 @@ export default function Page() {
       }
     };
     findAnime();
-  }, []);
+  },[query]);
   useEffect(() => {
     document.querySelector("body").classList.add("overflow-hidden");
   }, []);
@@ -48,7 +49,7 @@ export default function Page() {
         }`}
       >
         <h1 className="text-4xl font-medium">
-          Result Of Find For {searchParams.get("q")}
+          Result Of Find For {query}
         </h1>
         <a className="text-4xl font-medium" href="/">
           Home
@@ -122,14 +123,14 @@ export default function Page() {
         {searchData?.length === 0 ? (
           <span className="flex justify-center items-center text-5xl text-white font-bold mt-10 gap-2">
             <h1 className=" r">
-              Can`t Find Anime With Name {searchParams.get("q")}
+              Can`t Find Anime With Name {query}
             </h1>
           </span>
         ) : (
           ""
         )}
         {modal ? (
-          <span className="flex justify-center items-center relative bottom-100 w-screen h-screen">
+          <span className="flex justify-center items-center relative bottom-150 w-screen h-screen">
             <ModalAnime setModal={setModal} anime={selectedAnime} />
           </span>
         ) : (

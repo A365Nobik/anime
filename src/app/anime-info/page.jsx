@@ -6,6 +6,8 @@ import netflix from "../../assets/stream-icons/netflix.svg";
 import hulu from "../../assets/stream-icons/hulu.svg";
 import crunchyroll from "../../assets/stream-icons/crunchyroll.svg";
 import youtube from "../../assets/stream-icons/youtube.svg";
+import errorIcon from "../../assets/stream-icons/error.svg";
+import noEpisode from "../../../public/NoPoster.png";
 export default function Info() {
   const [searchParams] = useSearchParams();
   const [anime, setAnime] = useState(null);
@@ -16,11 +18,12 @@ export default function Info() {
   const [headerBg, setHeaderBg] = useState(false);
   const [steamLinks, setStreamLinks] = useState([]);
   const [episodes, setEpisodes] = useState([]);
-  const [page,setPage]= useState({
-    details:true,
-    episodes:false,
-    characters:false
-  })
+  const [errorStream, setErrorSteam] = useState(false);
+  const [page, setPage] = useState({
+    details: true,
+    episodes: false,
+    characters: false,
+  });
   useEffect(() => {
     const getAnimeInfo = async () => {
       try {
@@ -76,21 +79,29 @@ export default function Info() {
     }
   }, [anime]);
   function iconName(url) {
-    const hostUrl = new URL(url).hostname.replace("www.", "");
-    let serviceName = hostUrl.split(".")[0];
-    switch (serviceName) {
-      case "netflix": {
-        return netflix;
+    try {
+      const hostUrl = new URL(url).hostname.replace("www.", "");
+      let serviceName = hostUrl.split(".")[0];
+      switch (serviceName) {
+        case "netflix": {
+          return netflix;
+        }
+        case "hulu": {
+          return hulu;
+        }
+        case "crunchyroll": {
+          return crunchyroll;
+        }
+        case "youtube": {
+          return youtube;
+        }
+        default: {
+          return errorIcon;
+        }
       }
-      case "hulu": {
-        return hulu;
-      }
-      case "crunchyroll": {
-        return crunchyroll;
-      }
-      case "youtube": {
-        return youtube;
-      }
+    } catch (error) {
+      console.log(error);
+      return errorIcon;
     }
   }
 
@@ -196,17 +207,19 @@ export default function Info() {
                             {steamLinks.map((element) => {
                               return (
                                 <li key={element.id}>
-                                  <div className="bg-white rounded-md p-1 transition-transform hover:scale-110 active:scale-90">
-                                    <a
-                                      href={element.attributes.url}
-                                      target="blanc"
-                                    >
-                                      <img
-                                        className="w-8 h-8"
-                                        src={iconName(element.attributes.url)}
-                                        alt=""
-                                      />
-                                    </a>
+                                  <div className="bg-white rounded-md  transition-transform hover:scale-110 active:scale-90">
+                                    <button className="flex justify-center items-center p-1">
+                                      <a
+                                        href={element.attributes.url}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                      >
+                                        <img
+                                          className="w-8 h-8"
+                                          src={iconName(element.attributes.url)}
+                                        />
+                                      </a>
+                                    </button>
                                   </div>
                                 </li>
                               );
@@ -247,28 +260,77 @@ export default function Info() {
                     <h1 className="flex-1">{anime.attributes.showType}</h1>
                   </li>
                   <li className="flex  items-center text-white font-medium text-lg ml-2 gap-4 text-left">
-                    <h1 className="w-48">Came Out At</h1>
-                    <h1 className="flex-1">{anime.attributes.startDate}</h1>
+                    {anime.attributes.startDate ? (
+                      <>
+                        <h1 className="w-48">Came Out At</h1>
+                        <h1 className="flex-1">{anime.attributes.startDate}</h1>
+                      </>
+                    ) : (
+                      <>
+                        <h1 className="w-48">Came Out At</h1>
+                        <h1 className="flex-1">Undefined</h1>
+                      </>
+                    )}
                   </li>
                   <li className="flex  items-center text-white font-medium text-lg ml-2 gap-4 text-left">
-                    <h1 className="w-48">Average Rating</h1>
-                    <h1 className="flex-1">{anime.attributes.averageRating}</h1>
+                    {anime.attributes.averageRating ? (
+                      <>
+                        <h1 className="w-48">Average Rating</h1>
+                        <h1 className="flex-1">
+                          {anime.attributes.averageRating}
+                        </h1>
+                      </>
+                    ) : (
+                      <>
+                        <h1 className="w-48">Average Rating</h1>
+                        <h1 className="flex-1">Undefined</h1>
+                      </>
+                    )}
                   </li>
                   <li className="flex  items-center text-white font-medium text-lg ml-2 gap-4 text-left">
-                    <h1 className="w-48">Age Rating Guide</h1>
-                    <h1 className="flex-1">
-                      {anime.attributes.ageRatingGuide}
-                    </h1>
+                    {anime.attributes.ageRatingGuide ? (
+                      <>
+                        <h1 className="w-48">Episode Count</h1>
+                        <h1 className="flex-1">
+                          {anime.attributes.episodeCount}
+                        </h1>
+                      </>
+                    ) : (
+                      <>
+                        <h1 className="w-48">Episode Count</h1>
+                        <h1 className="flex-1">Undefined</h1>
+                      </>
+                    )}
                   </li>
                   <li className="flex  items-center text-white font-medium text-lg ml-2 gap-4 text-left">
-                    <h1 className="w-48">Episode Count</h1>
-                    <h1 className="flex-1">{anime.attributes.episodeCount}</h1>
+                    {anime.attributes.episodeCount ? (
+                      <>
+                        <h1 className="w-48">Episode Count</h1>
+                        <h1 className="flex-1">
+                          {anime.attributes.episodeCount}
+                        </h1>
+                      </>
+                    ) : (
+                      <>
+                        <h1 className="w-48">Episode Count</h1>
+                        <h1 className="flex-1">Undefined</h1>
+                      </>
+                    )}
                   </li>
                   <li className="flex  items-center text-white font-medium text-lg ml-2 gap-4 text-left">
-                    <h1 className="w-48">Episode Length</h1>
-                    <h1 className="flex-1">
-                      {anime.attributes.episodeLength} m
-                    </h1>
+                    {anime.attributes.episodeLength ? (
+                      <>
+                        <h1 className="w-48">Episode Length</h1>
+                        <h1 className="flex-1">
+                          {anime.attributes.episodeLength} m
+                        </h1>
+                      </>
+                    ) : (
+                      <>
+                        <h1 className="w-48">Episode Length</h1>
+                        <h1>Undefined</h1>
+                      </>
+                    )}
                   </li>
                   <li className="flex  items-center text-white font-medium text-lg ml-2 gap-4 text-left">
                     <h1 className="w-48">Status</h1>
@@ -289,12 +351,17 @@ export default function Info() {
                     episodes.map((element) => {
                       return (
                         <>
-                          <img
-                            loading="lazy"
-                            className="scale-80"
-                            src={element.attributes.thumbnail.original}
-                            alt="episode poster"
-                          />
+                          {element.attributes.thumbnail ? (
+                            <img
+                              loading="lazy"
+                              src={element?.attributes?.thumbnail?.original}
+                              alt="episode poster"
+                            />
+                          ) : (
+                            <>
+                            <img src={noEpisode} alt="noEpisode" />
+                            </>
+                          )}
                         </>
                       );
                     })
