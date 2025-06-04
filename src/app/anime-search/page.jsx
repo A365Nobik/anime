@@ -44,7 +44,7 @@ export default function Page() {
       <header
         onMouseEnter={() => setHeaderBg(true)}
         onMouseLeave={() => setHeaderBg(false)}
-        className={`sticky flex justify-between items-center w-full p-4 text-[#EAEFEF] z-1000 transition-colors ${
+        className={`sticky flex justify-between items-center w-full p-4 text-[#EAEFEF] z-1000 transition-colors duration-500  delay-100 ${
           headerBg ? " bg-gray-800" : ""
         }`}
       >

@@ -18,12 +18,12 @@ export default function Info() {
   const [headerBg, setHeaderBg] = useState(false);
   const [steamLinks, setStreamLinks] = useState([]);
   const [episodes, setEpisodes] = useState([]);
-  const [errorStream, setErrorSteam] = useState(false);
-  const [page, setPage] = useState({
-    details: true,
-    episodes: false,
-    characters: false,
-  });
+  // const [errorStream, setErrorSteam] = useState(false);
+  // const [page, setPage] = useState({
+  //   details: true,
+  //   episodes: false,
+  //   characters: false,
+  // });
   useEffect(() => {
     const getAnimeInfo = async () => {
       try {
@@ -129,7 +129,7 @@ export default function Info() {
       <header
         onMouseEnter={() => setHeaderBg(true)}
         onMouseLeave={() => setHeaderBg(false)}
-        className={` sticky flex  justify-between items-center w-full p-4 text-[#EAEFEF] z-1000 transition-colors ${
+        className={` sticky flex  justify-between items-center w-full p-4 text-[#EAEFEF] z-1000 transition-colors duration-500  delay-100 ${
           headerBg ? " bg-gray-800" : ""
         } `}
       >
@@ -289,6 +289,21 @@ export default function Info() {
                   </li>
                   <li className="flex  items-center text-white font-medium text-lg ml-2 gap-4 text-left">
                     {anime.attributes.ageRatingGuide ? (
+                      <>
+                        <h1 className="w-48">Age Rating Guide</h1>
+                        <h1 className="flex-1">
+                          {anime.attributes.ageRatingGuide}
+                        </h1>
+                      </>
+                    ) : (
+                      <>
+                        <h1 className="w-48">Age Rating Guide</h1>
+                        <h1 className="flex-1">Undefined</h1>
+                      </>
+                    )}
+                  </li>
+                  <li className="flex  items-center text-white font-medium text-lg ml-2 gap-4 text-left">
+                    {anime.attributes.episodeCount ? (
                       <>
                         <h1 className="w-48">Episode Count</h1>
                         <h1 className="flex-1">

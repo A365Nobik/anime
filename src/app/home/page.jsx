@@ -149,24 +149,23 @@ export default function Page() {
           </div>
         </div>
       </header>
-      <main>
-        <div
-          className={`${animRight ? "right-slide" : ""} ${
-            animLeft ? "left-slide" : ""
-          } relative bottom-20 h-[600px]`}
-        >
+      <div
+        className={`relative w-screen h-[600px] overflow-hidden bottom-20 ${
+          animRight ? "right-slide" : ""
+        } ${animLeft ? "left-slide" : ""} `}
+      >
+        <img
+          className="object-cover w-full h-full"
+          src={currentAnime?.attributes?.coverImage?.large}
+          alt=""
+        />
+        <div className="absolute inset-0 bg-gray-950/50">
           {animeList &&
           animeList.length > 0 &&
           currentAnime &&
           currentAnime.attributes ? (
             <>
-              <div
-                className="flex justify-start items-start h-[600px]  w-full  bg-center bg-no-repeat bg-cover  relative  "
-                style={{
-                  backgroundImage: `url('${currentAnime.attributes.coverImage.small}')`,
-                }}
-              >
-                <div className="flex flex-col justify-center items-center ml-3 mt-40 bg-black/50 text-white p-2 rounded-2xl h-60 w-200">
+                <div className="flex flex-col justify-center items-center ml-5 mt-80 bg-black/50 text-white p-2 rounded-2xl h-60 w-200 ">
                   <h1 className="text-4xl font-bold">
                     {currentAnime.attributes.titles.en
                       ? currentAnime.attributes.titles.en
@@ -221,7 +220,6 @@ export default function Page() {
                     </button>
                   </div>
                 </div>
-              </div>
               <div className="flex justify-center items-center z-1001 gap-3 relative bottom-30 left-[35%] text-2xl ">
                 <button
                   className="py-4 px-3 bg-black border-solid border-2 border-amber-600 hover:scale-105 active:scale-95 transition-all rounded-2xl"
@@ -244,7 +242,8 @@ export default function Page() {
             </span>
           )}
         </div>
-
+      </div>
+      <main>
         <div className="ml-5 relative bottom-15 flex flex-col  ">
           <h1 className="text-white text-5xl font-medium mb-5  ">
             Trending Anime
