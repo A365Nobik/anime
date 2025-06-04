@@ -107,19 +107,7 @@ export default function Page() {
   }
   async function findAnimeName() {
     const value = inputRef.current.value;
-    try {
-      const response = await fetch(`${apiUrl}/anime?filter[text]=${value}`);
-      if (response.ok) {
-        const json = await response.json();
-        navigate(`/result?q=${encodeURIComponent(value)}`, {
-          state: {
-            searchData: json.data,
-          },
-        });
-      }
-    } catch (error) {
-      alert(error);
-    }
+    navigate(`/result?q=${encodeURIComponent(value)}`);
   }
   const currentAnime = animeList[currentAnimeNumber];
   return (

@@ -1,6 +1,7 @@
 import { FaSearch } from "react-icons/fa";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { useState, useRef, useEffect } from "react";
-import { useNavigate, useLocation, useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import ModalAnime from "../../components/ModalAnime";
 
 export default function Page() {
@@ -8,36 +9,35 @@ export default function Page() {
   const inputRef = useRef(null);
   let navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const location = useLocation();
-  const { searchData } = location.state || {};
   const [modal, setModal] = useState(false);
   const apiUrl = import.meta.env.VITE_API_URL;
   const [selectedAnime, setSelectedAnime] = useState(null);
   const [headerBg, setHeaderBg] = useState(false);
-
+  const [searchData, setSearchData] = useState(null);
   async function findAnimeName() {
     const value = inputRef.current.value;
-    try {
-      const response = await fetch(`${apiUrl}/anime?filter[text]=${value}`);
-      if (response.ok) {
-        const json = await response.json();
-        navigate(`/result?q=${encodeURIComponent(value)}`, {
-          state: {
-            searchData: json.data,
-          },
-        });
-      }
-    } catch (error) {
-      alert(error);
-    }
+    navigate(`/result?q=${encodeURIComponent(value)}`);
   }
   function handleModalClick(element) {
     setSelectedAnime(element);
     setModal(true);
   }
   useEffect(() => {
+    const findAnime = async () => {
+      const response = await fetch(
+        `${apiUrl}/anime?filter[text]=${searchParams.get("q")}`
+      );
+      if (response.ok) {
+        const json = await response.json();
+        setSearchData(json.data);
+      }
+    };
+    findAnime();
+  }, []);
+  useEffect(() => {
     document.querySelector("body").classList.add("overflow-hidden");
   }, []);
+  console.log(searchData);
   return (
     <>
       <header
@@ -84,37 +84,45 @@ export default function Page() {
       </header>
       <main>
         <ul className="grid grid-cols-10 gap-2  justify-center items-center mt-35">
-          {searchData && searchData.length > 0
-            ? searchData.map((element) => {
-                return (
-                  <li key={element.id}>
-                    <div
-                      className="flex flex-col justify-center items-center transition-transform hover:scale-110 cursor-pointer"
-                      onClick={() => handleModalClick(element)}
-                    >
-                      <span className="flex flex-col items-start justify-center">
-                        <img
-                          className="w-50 h-65 rounded-lg"
-                          src={element.attributes.posterImage.original}
-                          alt="posterImage"
-                        />
-                        <h1 className="text-lg text-center text-white font-medium whitespace-nowrap overflow-hidden text-ellipsis">
-                          {element.attributes.canonicalTitle.length > 15
-                            ? element.attributes.canonicalTitle.slice(0, 15) +
-                              "..."
-                            : element.attributes.canonicalTitle}
-                        </h1>
-                      </span>
-                    </div>
-                  </li>
-                );
-              })
-            : ""}
+          {searchData && searchData.length > 0 ? (
+            searchData.map((element) => {
+              return (
+                <li key={element.id}>
+                  <div
+                    className="flex flex-col justify-center items-center transition-transform hover:scale-110 cursor-pointer"
+                    onClick={() => handleModalClick(element)}
+                  >
+                    <span className="flex flex-col items-start justify-center">
+                      <img
+                        className="w-50 h-65 rounded-lg"
+                        src={element.attributes.posterImage.original}
+                        alt="posterImage"
+                      />
+                      <h1 className="text-lg text-center text-white font-medium whitespace-nowrap overflow-hidden text-ellipsis">
+                        {element.attributes.canonicalTitle.length > 15
+                          ? element.attributes.canonicalTitle.slice(0, 15) +
+                            "..."
+                          : element.attributes.canonicalTitle}
+                      </h1>
+                    </span>
+                  </div>
+                </li>
+              );
+            })
+          ) : (
+            ""
+          )}
         </ul>
-        {searchData.length === 0 ? (
+        {searchData===undefined || searchData===null ?(
+                      <span className="flex justify-center items-center text-5xl text-white font-bold mt-10 gap-2">
+              <h1 className=" r">Anime Data Is Loading</h1>
+              <AiOutlineLoading3Quarters className="animate-spin" />
+            </span>
+        ):""}
+        {searchData?.length === 0 ? (
           <span className="flex justify-center items-center text-5xl text-white font-bold mt-10 gap-2">
             <h1 className=" r">
-              Can`t Find Anime With Name {searchParams.get("q")}{" "}
+              Can`t Find Anime With Name {searchParams.get("q")}
             </h1>
           </span>
         ) : (
