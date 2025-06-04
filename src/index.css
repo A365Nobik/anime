@@ -1,0 +1,40 @@
+@import "tailwindcss";
+
+@keyframes slideToRight {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+.right-slide {
+  animation: slideToRight 1s ease;
+}
+@keyframes slideToLeft {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+.left-slide {
+  animation: slideToLeft 1s ease;
+}
+@theme {
+  --right-slide: slide-right 1s;
+  --left-slide: slide-left 1s;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-thumb {
+  background-color: oklch(70.5% 0.213 47.604);
+  border-radius: 25px;
+}
+::-webkit-scrollbar-track{
+  background-color:oklch(37.3% 0.034 259.733);
+  border-radius: 25px;
+}
