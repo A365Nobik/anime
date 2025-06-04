@@ -45,7 +45,7 @@ export default function Page() {
     const getTrending = async () => {
       try {
         const response = await fetch(
-          `${apiUrl}/anime?filter[status]=current&page[limit]=20&page[offset]=20&sort=userCount`
+          `${apiUrl}/anime?filter[status]=current&page[limit]=20&page[offset]=0&sort=-userCount`
         );
         if (response.ok) {
           const json = await response.json();
