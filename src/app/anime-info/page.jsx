@@ -303,21 +303,6 @@ export default function Info() {
                     )}
                   </li>
                   <li className="flex  items-center text-white font-medium text-lg ml-2 gap-4 text-left">
-                    {anime.attributes.episodeCount ? (
-                      <>
-                        <h1 className="w-48">Episode Count</h1>
-                        <h1 className="flex-1">
-                          {anime.attributes.episodeCount}
-                        </h1>
-                      </>
-                    ) : (
-                      <>
-                        <h1 className="w-48">Episode Count</h1>
-                        <h1 className="flex-1">Undefined</h1>
-                      </>
-                    )}
-                  </li>
-                  <li className="flex  items-center text-white font-medium text-lg ml-2 gap-4 text-left">
                     {anime.attributes.episodeLength ? (
                       <>
                         <h1 className="w-48">Episode Length</h1>
@@ -359,7 +344,7 @@ export default function Info() {
                             />
                           ) : (
                             <>
-                            <img src={noEpisode} alt="noEpisode" />
+                              <img src={noEpisode} alt="noEpisode" />
                             </>
                           )}
                         </>
@@ -372,6 +357,7 @@ export default function Info() {
                   )}
                 </ul>
               </div>
+              <map name=""></map>
             </div>
           </main>
         </>

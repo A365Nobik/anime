@@ -115,7 +115,7 @@ export default function Page() {
       <header
         onMouseEnter={() => setHeaderBg(true)}
         onMouseLeave={() => setHeaderBg(false)}
-        className={`sticky flex justify-between items-center w-full p-4 text-[#EAEFEF] z-1000 transition-colors ${
+        className={`sticky flex justify-between items-center w-full p-4 text-[#EAEFEF] z-1000 transition-colors duration-500  delay-100 ${
           headerBg ? " bg-gray-800" : ""
         }`}
       >
@@ -153,7 +153,7 @@ export default function Page() {
         <div
           className={`${animRight ? "right-slide" : ""} ${
             animLeft ? "left-slide" : ""
-          }`}
+          } relative bottom-20 h-[600px]`}
         >
           {animeList &&
           animeList.length > 0 &&
@@ -161,7 +161,7 @@ export default function Page() {
           currentAnime.attributes ? (
             <>
               <div
-                className="flex justify-start items-start h-[450px]  w-full  bg-center bg-no-repeat bg-cover  relative  "
+                className="flex justify-start items-start h-[600px]  w-full  bg-center bg-no-repeat bg-cover  relative  "
                 style={{
                   backgroundImage: `url('${currentAnime.attributes.coverImage.small}')`,
                 }}
@@ -245,7 +245,7 @@ export default function Page() {
           )}
         </div>
 
-        <div className="ml-5 mb-7 flex flex-col  ">
+        <div className="ml-5 relative bottom-15 flex flex-col  ">
           <h1 className="text-white text-5xl font-medium mb-5  ">
             Trending Anime
           </h1>
