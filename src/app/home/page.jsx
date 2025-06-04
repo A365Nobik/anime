@@ -45,7 +45,7 @@ export default function Page() {
     const getTrending = async () => {
       try {
         const response = await fetch(
-          `${apiUrl}/anime?filter%5Bstatus%5D=current&page%5Blimit%5D=20&page%5Boffset%5D=20&sort=-userCount`
+          `${apiUrl}https://kitsu.io/api/edge/anime?filter[status]=current&page[limit]=20&page[offset]=20&sort=-userCount`
         );
         if (response.ok) {
           const json = await response.json();
