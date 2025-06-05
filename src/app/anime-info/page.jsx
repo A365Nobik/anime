@@ -391,7 +391,7 @@ export default function Info() {
                   <hr className="w-full text-gray-600" />
                 </div>
                 <ul className="grid grid-5 justify-center items-center  overflow-y-auto h-[500px] gap-2 p-1 ">
-                  {anime && episodes && episodes.length > 0 ? (
+                  {anime && episodes ? (
                     episodes.map((element) => {
                       return (
                         <>
@@ -405,7 +405,7 @@ export default function Info() {
                                   Episode №{element.attributes.number}
                                 </h1>
                                 <img
-                                  className=" object-cover rounded-md w-[350px] h-[250px]"
+                                  className=" object-cover rounded-md w-[400px] h-[250px]"
                                   loading="lazy"
                                   src={element?.attributes?.thumbnail?.original}
                                   alt={`Episode ${element.attributes.number} With Poster`}
@@ -421,7 +421,7 @@ export default function Info() {
                                 </h1>
                                 <img
                                   loading="lazy"
-                                  className=" object-cover w-[350px] h-[250px] rounded-md "
+                                  className=" object-cover w-[400px] h-[250px] rounded-md "
                                   src={anime.attributes.posterImage.original}
                                   alt={`Episode №${element.attributes.number} Without Poster`}
                                 />
@@ -463,43 +463,48 @@ export default function Info() {
                   </h1>
                   <hr className="w-full text-gray-600" />
                 </div>
+                {characters.length === 0 || charactersCard.length === 0 ? (
+                  <span className="flex flex-col justify-center items-center text-3xl text-white font-bold  gap-2">
+                    <h1 className="text-center">
+                      Loading Anime Data Or Characters For This Anime Are
+                      Missing
+                    </h1>
+                    <AiOutlineLoading3Quarters className="animate-spin" />
+                  </span>
+                ) : (
+                  ""
+                )}
                 <ul className="grid grid-cols-5 justify-center items-center  overflow-y-auto h-[500px] gap-2 p-1">
-                  {anime && characters && characters.length > 0 ? (
-                    charactersCard.map((element) => {
-                      return (
-                        <>
-                          <li
-                            key={element.id}
-                            className="h-[325px] border-2 border-white flex flex-col justify-center items-center p-1  rounded-lg"
-                          >
-                            {element?.attributes?.image?.original ? (
-                              <img
-                                className="object-cover rounded-md w-[220px] h-[250px]"
-                                loading="lazy"
-                                src={element?.attributes?.image?.original}
-                                alt={`Character:${element?.attributes?.canonicalName} Id:${element?.id}`}
-                              />
-                            ) : (
-                              <img
-                                className="object-cover [220px] h-[250px]"
-                                src={undefinedCharacter}
-                                alt={`Undefined Character:${element?.attributes?.canonicalName} id:${element?.id}`}
-                              />
-                            )}
-                            <h1 className="text-white font-medium text-lg text-center">
-                              {element?.attributes?.canonicalName}
-                            </h1>
-                          </li>
-                        </>
-                      );
-                    })
-                  ) : (
-                    <>
-                      <span className="flex justify-center items-center text-3xl text-white font-bold mt-10 gap-2">
-                        <AiOutlineLoading3Quarters className="animate-spin" />
-                      </span>
-                    </>
-                  )}
+                  {anime && characters && characters.length > 0
+                    ? charactersCard.map((element) => {
+                        return (
+                          <>
+                            <li
+                              key={element.id}
+                              className="h-[325px] border-2 border-white flex flex-col justify-center items-center p-1  rounded-lg"
+                            >
+                              {element?.attributes?.image?.original ? (
+                                <img
+                                  className="object-cover rounded-md w-[220px] h-[250px]"
+                                  loading="lazy"
+                                  src={element?.attributes?.image?.original}
+                                  alt={`Character:${element?.attributes?.canonicalName} Id:${element?.id}`}
+                                />
+                              ) : (
+                                <img
+                                  className="object-cover [220px] h-[250px]"
+                                  src={undefinedCharacter}
+                                  alt={`Undefined Character:${element?.attributes?.canonicalName} id:${element?.id}`}
+                                />
+                              )}
+                              <h1 className="text-white font-medium text-lg text-center">
+                                {element?.attributes?.canonicalName}
+                              </h1>
+                            </li>
+                          </>
+                        );
+                      })
+                    : ""}
                 </ul>
               </div>
             </div>

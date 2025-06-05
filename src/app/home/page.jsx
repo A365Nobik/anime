@@ -114,8 +114,8 @@ export default function Page() {
     const value = inputRef.current.value;
     navigate(`/result?q=${encodeURIComponent(value)}`);
   }
-  console.log(window.scrollY);
-  const currentAnime = animeList[currentAnimeNumber];
+  const 
+  currentAnime = animeList[currentAnimeNumber];
   return (
     <>
       <header
