@@ -27,6 +27,9 @@
   --left-slide: slide-left 1s;
 }
 
+body::-webkit-scrollbar {
+  width: 0;
+}
 ::-webkit-scrollbar {
   width: 6px;
 }
@@ -34,7 +37,7 @@
   background-color: oklch(70.5% 0.213 47.604);
   border-radius: 25px;
 }
-::-webkit-scrollbar-track{
-  background-color:oklch(37.3% 0.034 259.733);
+::-webkit-scrollbar-track {
+  background-color: oklch(37.3% 0.034 259.733);
   border-radius: 25px;
 }

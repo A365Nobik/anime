@@ -114,6 +114,7 @@ export default function Page() {
     const value = inputRef.current.value;
     navigate(`/result?q=${encodeURIComponent(value)}`);
   }
+  console.log(window.scrollY);
   const currentAnime = animeList[currentAnimeNumber];
   return (
     <>
@@ -288,7 +289,11 @@ export default function Page() {
           </ul>
         </div>
         {modal ? (
-          <span className="flex justify-center items-center relative bottom-300 w-screen h-screen">
+          <span
+            className={`flex justify-center items-center relative ${
+              window.scrollY >= 252 ? "bottom-250" : "bottom-300"
+            } w-screen h-screen`}
+          >
             <ModalAnime setModal={setModal} anime={selectedAnime} />
           </span>
         ) : (
