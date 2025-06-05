@@ -220,7 +220,7 @@ export default function Page() {
                     </button>
                   </div>
                 </div>
-              <div className="flex justify-center items-center z-1001 gap-3 relative bottom-30 left-[35%] text-2xl ">
+              <div className="flex justify-center items-center z-1001 gap-3 relative bottom-15 left-[35%] text-2xl ">
                 <button
                   className="py-4 px-3 bg-black border-solid border-2 border-amber-600 hover:scale-105 active:scale-95 transition-all rounded-2xl"
                   onClick={handleLeftClick}

@@ -7,7 +7,7 @@ import hulu from "../../assets/stream-icons/hulu.svg";
 import crunchyroll from "../../assets/stream-icons/crunchyroll.svg";
 import youtube from "../../assets/stream-icons/youtube.svg";
 import errorIcon from "../../assets/stream-icons/error.svg";
-import noEpisode from "../../../public/NoPoster.png";
+import undefinedCharacter from "../../../public/undefined.png";
 export default function Info() {
   const [searchParams] = useSearchParams();
   const [anime, setAnime] = useState(null);
@@ -16,14 +16,13 @@ export default function Info() {
   let navigate = useNavigate();
   const [focus, setFocus] = useState(false);
   const [headerBg, setHeaderBg] = useState(false);
+  const [moreEpisodesLoaded, setMoreEpisodesLoaded] = useState(false);
   const [steamLinks, setStreamLinks] = useState([]);
-  const [episodes, setEpisodes] = useState([]);
-  // const [errorStream, setErrorSteam] = useState(false);
-  // const [page, setPage] = useState({
-  //   details: true,
-  //   episodes: false,
-  //   characters: false,
-  // });
+  let [episodes, setEpisodes] = useState([]);
+  let [offset, setOffset] = useState(0);
+  let [characters, setCharacters] = useState([]);
+  let [charactersCard, setCharactersCard] = useState([]);
+
   useEffect(() => {
     const getAnimeInfo = async () => {
       try {
@@ -65,11 +64,19 @@ export default function Info() {
       const getEpisodes = async () => {
         try {
           const response = await fetch(
-            `${apiUrl}/anime/${anime.id}/episodes?page[offset]=0&page[limit]=20`
+            `${apiUrl}/anime/${anime.id}/episodes?page[offset]=${offset}&page[limit]=20`
           );
           if (response.ok) {
             const json = await response.json();
-            setEpisodes(json.data);
+            if (json.data.length === 0) {
+              setMoreEpisodesLoaded(true);
+            } else {
+              if (offset >= 20) {
+                setEpisodes((prev) => prev.concat(json.data));
+              } else {
+                setEpisodes(json.data);
+              }
+            }
           }
         } catch (error) {
           alert(error);
@@ -77,7 +84,41 @@ export default function Info() {
       };
       getEpisodes();
     }
+  }, [anime, offset]);
+  useEffect(() => {
+    if (anime) {
+      const getCharacters = async () => {
+        try {
+          const response = await fetch(
+            `${apiUrl}/anime/${anime.id}/characters?page[offset]=0&page[limit]=20`
+          );
+          if (response.ok) {
+            const json = await response.json();
+            setCharacters(json.data);
+          }
+        } catch (error) {
+          alert(error);
+        }
+      };
+      getCharacters();
+    }
   }, [anime]);
+  useEffect(() => {
+    if (anime && characters && characters.length > 0) {
+      const getCharactersCard = async () => {
+        characters.map(async (element) => {
+          const response = await fetch(
+            `${element.relationships.character.links.related}`
+          );
+          if (response.ok) {
+            const json = await response.json();
+            setCharactersCard((prev) => prev.concat(json.data));
+          }
+        });
+      };
+      getCharactersCard();
+    }
+  }, [characters]);
   function iconName(url) {
     try {
       const hostUrl = new URL(url).hostname.replace("www.", "");
@@ -121,9 +162,12 @@ export default function Info() {
       alert(error);
     }
   }
+
   console.log(anime);
   console.log(steamLinks);
   console.log(episodes);
+  console.log(characters);
+  console.log(charactersCard);
   return (
     <>
       <header
@@ -346,22 +390,47 @@ export default function Info() {
                   <h1 className="text-2xl text-white font-medium">Episodes</h1>
                   <hr className="w-full text-gray-600" />
                 </div>
-                <ul className="grid grid-5 justify-center items-center  overflow-y-auto h-[400px] ">
+                <ul className="grid grid-5 justify-center items-center  overflow-y-auto h-[500px] gap-2 p-1 ">
                   {anime && episodes && episodes.length > 0 ? (
                     episodes.map((element) => {
                       return (
                         <>
-                          {element.attributes.thumbnail ? (
-                            <img
-                              loading="lazy"
-                              src={element?.attributes?.thumbnail?.original}
-                              alt="episode poster"
-                            />
-                          ) : (
-                            <>
-                              <img src={noEpisode} alt="noEpisode" />
-                            </>
-                          )}
+                          <li
+                            key={element.id}
+                            className="border-2 rounded-md border-white flex flex-col justify-center items-center p-1"
+                          >
+                            {element?.attributes?.thumbnail ? (
+                              <>
+                                <h1 className="text-white font-medium text-lg">
+                                  Episode №{element.attributes.number}
+                                </h1>
+                                <img
+                                  className="rounded-md w-[300px] h-[200px]"
+                                  loading="lazy"
+                                  src={element?.attributes?.thumbnail?.original}
+                                  alt="episode poster"
+                                />
+                                <h1 className="text-white font-medium text-lg text-center">
+                                  {element.attributes.canonicalTitle}
+                                </h1>
+                              </>
+                            ) : (
+                              <>
+                                <h1 className="text-white font-medium text-lg">
+                                  Episode №{element.attributes.number}
+                                </h1>
+                                <img
+                                  loading="lazy"
+                                  className="object-cover"
+                                  src={anime.attributes.posterImage.original}
+                                  alt="noEpisode"
+                                />
+                                <h1 className="text-white font-medium text-lg text-center">
+                                  {element.attributes.canonicalTitle}
+                                </h1>
+                              </>
+                            )}
+                          </li>
                         </>
                       );
                     })
@@ -370,9 +439,69 @@ export default function Info() {
                       <AiOutlineLoading3Quarters className="animate-spin" />
                     </span>
                   )}
+                  <span className="flex justify-center items-center">
+                    {moreEpisodesLoaded === false ? (
+                      <button
+                        onClick={() => {
+                          setOffset((prev) => prev + 20);
+                          console.log(offset);
+                        }}
+                        className=" bg-orange-500 w-2/4 p-1 rounded-2xl   font-medium transition-transform hover:scale-110 active:scale-90 text-white"
+                      >
+                        Load More Episodes
+                      </button>
+                    ) : (
+                      ""
+                    )}
+                  </span>
                 </ul>
               </div>
-              <map name=""></map>
+              <div className="w-[1000px]  border-2 border-gray-600 rounded-lg relative bottom-15 ">
+                <div className="flex flex-col justify-center items-center">
+                  <h1 className="text-2xl text-white font-medium">
+                    Characters
+                  </h1>
+                  <hr className="w-full text-gray-600" />
+                </div>
+                <ul className="grid grid-cols-5 justify-center items-center  overflow-y-auto h-[500px] gap-2 p-1">
+                  {anime && characters && characters.length > 0 ? (
+                    charactersCard.map((element) => {
+                      return (
+                        <>
+                          <li
+                            key={element.id}
+                            className="h-[325px] border-2 border-white flex flex-col justify-center items-center p-1  rounded-lg"
+                          >
+                            {element?.attributes?.image?.original ? (
+                              <img
+                                className="object-cover rounded-md"
+                                loading="lazy"
+                                src={element?.attributes?.image?.original}
+                                alt={`Character:${element?.attributes?.canonicalName} Id:${element?.id}`}
+                              />
+                            ) : (
+                              <img
+                                className="object-cover"
+                                src={undefinedCharacter}
+                                alt={`Undefined Character:${element?.attributes?.canonicalName} id:${element?.id}`}
+                              />
+                            )}
+                            <h1 className="text-white font-medium text-lg text-center">
+                              {element?.attributes?.canonicalName}
+                            </h1>
+                          </li>
+                        </>
+                      );
+                    })
+                  ) : (
+                    <>
+                      <span className="flex justify-center items-center text-3xl text-white font-bold mt-10 gap-2">
+                        <AiOutlineLoading3Quarters className="animate-spin" />
+                      </span>
+                    </>
+                  )}
+                </ul>
+              </div>
             </div>
           </main>
         </>
