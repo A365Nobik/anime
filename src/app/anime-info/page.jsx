@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
-import { AiOutlineLoading3Quarters, AiFillFastForward } from "react-icons/ai";
-import { FaSearch, FaCalendar, FaClock, FaPlay } from "react-icons/fa";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import { FaSearch } from "react-icons/fa";
 
 import undefinedCharacter from "../../../public/undefined.png";
 export default function Info() {
