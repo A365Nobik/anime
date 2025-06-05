@@ -2,11 +2,7 @@ import { useEffect, useState, useRef } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { AiOutlineLoading3Quarters, AiFillFastForward } from "react-icons/ai";
 import { FaSearch, FaCalendar, FaClock, FaPlay } from "react-icons/fa";
-import netflix from "../../assets/stream-icons/netflix.svg";
-import hulu from "../../assets/stream-icons/hulu.svg";
-import crunchyroll from "../../assets/stream-icons/crunchyroll.svg";
-import youtube from "../../assets/stream-icons/youtube.svg";
-import errorIcon from "../../assets/stream-icons/error.svg";
+
 import undefinedCharacter from "../../../public/undefined.png";
 export default function Info() {
   const [searchParams] = useSearchParams();
@@ -125,24 +121,39 @@ export default function Info() {
       let serviceName = hostUrl.split(".")[0];
       switch (serviceName) {
         case "netflix": {
-          return netflix;
+          return "https://www.svgrepo.com/show/303341/netflix-1-logo.svg";
         }
         case "hulu": {
-          return hulu;
+          return "https://www.svgrepo.com/show/303524/hulu-logo.svg";
         }
         case "crunchyroll": {
-          return crunchyroll;
+          return "https://www.svgrepo.com/show/343546/crunchyroll-network-connection-communication-interaction.svg";
         }
         case "youtube": {
-          return youtube;
+          return "https://www.svgrepo.com/show/475700/youtube-color.svg";
         }
-        default: {
-          return errorIcon;
+        case "amazon": {
+          return "https://www.svgrepo.com/show/463913/amazon.svg";
+        }
+        case "hidive": {
+          return "https://static.wikia.nocookie.net/enanimanga/images/4/47/HIDIVE_logo.png/revision/latest?cb=20190703062203";
+        }
+        case "funimation": {
+          return "https://www.svgrepo.com/show/343546/crunchyroll-network-connection-communication-interaction.svg";
+        }
+        case "contv": {
+          return "https://cdn2.downdetector.com/static/uploads/logo/CONtv.png";
+        }
+        case "animelab": {
+          return "https://img.icons8.com/?size=512&id=ImtaJYOCNBG4&format=png";
+        }
+        case "tubitv":{
+          return "https://www.logo.wine/a/logo/Tubi/Tubi-Logo.wine.svg"
         }
       }
     } catch (error) {
       console.log(error);
-      return errorIcon;
+      return "https://www.svgrepo.com/show/459055/error-outline.svg";
     }
   }
 
@@ -321,7 +332,7 @@ export default function Info() {
                       <>
                         <h1 className="w-48">Average Rating</h1>
                         <h1 className="flex-1">
-                          {anime.attributes.averageRating}
+                          {Math.round(anime.attributes.averageRating)}
                         </h1>
                       </>
                     ) : (
