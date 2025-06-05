@@ -56,7 +56,6 @@ export default function Page() {
       }
     };
     getTrending();
-    document.querySelector("body").classList.add("overflow-hidden");
   }, []);
 
   useEffect(() => {
@@ -73,7 +72,13 @@ export default function Page() {
     }, 5000);
     return () => clearInterval(interval);
   });
-
+  useEffect(() => {
+    if (modal) {
+      document.querySelector("body").classList.add("overflow-y-hidden");
+    } else {
+      document.querySelector("body").classList.remove("overflow-y-hidden");
+    }
+  }, [modal]);
   function handleRightClick() {
     setAnimRight(true);
 
@@ -165,61 +170,61 @@ export default function Page() {
           currentAnime &&
           currentAnime.attributes ? (
             <>
-                <div className="flex flex-col justify-center items-center ml-5 mt-80 bg-black/50 text-white p-2 rounded-2xl h-60 w-200 ">
-                  <h1 className="text-4xl font-bold">
-                    {currentAnime.attributes.titles.en
-                      ? currentAnime.attributes.titles.en
-                      : currentAnime.attributes.titles.en_jp}
-                  </h1>
-                  <hr className="w-full" />
-                  <div className="flex justify-center items-center gap-2 w-150 text-orange-500  font-medium ">
+              <div className="flex flex-col justify-center items-center ml-5 mt-80 bg-black/50 text-white p-2 rounded-2xl h-60 w-200 ">
+                <h1 className="text-4xl font-bold">
+                  {currentAnime.attributes.titles.en
+                    ? currentAnime.attributes.titles.en
+                    : currentAnime.attributes.titles.en_jp}
+                </h1>
+                <hr className="w-full" />
+                <div className="flex justify-center items-center gap-2 w-150 text-orange-500  font-medium ">
+                  <span className="flex justify-center items-center gap-1">
+                    <FaPlay />
+                    <h1>
+                      {currentAnime.attributes.subtype[0].toUpperCase()}
+                      {currentAnime.attributes.subtype.slice(1, 5)}
+                    </h1>
+                  </span>
+                  <span className="flex justify-center items-center gap-1">
+                    <FaCalendar />
+                    <h1>{currentAnime.attributes.startDate}</h1>
+                  </span>
+                  {currentAnime.attributes.episodeCount ? (
                     <span className="flex justify-center items-center gap-1">
-                      <FaPlay />
-                      <h1>
-                        {currentAnime.attributes.subtype[0].toUpperCase()}
-                        {currentAnime.attributes.subtype.slice(1, 5)}
-                      </h1>
+                      <AiFillFastForward className="text-2xl" />
+                      <h1>{currentAnime.attributes.episodeCount}</h1>
                     </span>
-                    <span className="flex justify-center items-center gap-1">
-                      <FaCalendar />
-                      <h1>{currentAnime.attributes.startDate}</h1>
-                    </span>
-                    {currentAnime.attributes.episodeCount ? (
-                      <span className="flex justify-center items-center gap-1">
-                        <AiFillFastForward className="text-2xl" />
-                        <h1>{currentAnime.attributes.episodeCount}</h1>
-                      </span>
-                    ) : (
-                      ""
-                    )}
-                    <span className="flex justify-center items-center gap-1">
-                      <FaClock />
-                      <h1>{currentAnime.attributes.episodeLength}m</h1>
-                    </span>
-                  </div>
-                  <h1 className="w-100 font-medium">
-                    {currentAnime.attributes.description.slice(0, 200)}...
-                  </h1>
-                  <div className="flex justify-center items-center gap-3 mt-1">
-                    <button className="flex justify-center items-center bg-orange-500 p-2 gap-1 rounded-2xl  text-lg font-medium transition-transform hover:scale-110 active:scale-90">
-                      <FaVideo />
-                      <a
-                        target="blanc"
-                        href={`https://www.youtube.com/watch?v=${currentAnime.attributes.youtubeVideoId}`}
-                      >
-                        Watch Trailer
-                      </a>
-                    </button>
-                    <button className="flex justify-center items-center bg-orange-500 p-2 gap-1 rounded-2xl  text-lg font-medium transition-transform hover:scale-110 active:scale-90">
-                      <FaInfoCircle />
-                      <a
-                        href={`/info?q=${currentAnime.attributes.canonicalTitle}`}
-                      >
-                        View Anime Info
-                      </a>
-                    </button>
-                  </div>
+                  ) : (
+                    ""
+                  )}
+                  <span className="flex justify-center items-center gap-1">
+                    <FaClock />
+                    <h1>{currentAnime.attributes.episodeLength}m</h1>
+                  </span>
                 </div>
+                <h1 className="w-100 font-medium">
+                  {currentAnime.attributes.description.slice(0, 200)}...
+                </h1>
+                <div className="flex justify-center items-center gap-3 mt-1">
+                  <button className="flex justify-center items-center bg-orange-500 p-2 gap-1 rounded-2xl  text-lg font-medium transition-transform hover:scale-110 active:scale-90">
+                    <FaVideo />
+                    <a
+                      target="blanc"
+                      href={`https://www.youtube.com/watch?v=${currentAnime.attributes.youtubeVideoId}`}
+                    >
+                      Watch Trailer
+                    </a>
+                  </button>
+                  <button className="flex justify-center items-center bg-orange-500 p-2 gap-1 rounded-2xl  text-lg font-medium transition-transform hover:scale-110 active:scale-90">
+                    <FaInfoCircle />
+                    <a
+                      href={`/info?q=${currentAnime.attributes.canonicalTitle}`}
+                    >
+                      View Anime Info
+                    </a>
+                  </button>
+                </div>
+              </div>
               <div className="flex justify-center items-center z-1001 gap-3 relative bottom-15 left-[35%] text-2xl ">
                 <button
                   className="py-4 px-3 bg-black border-solid border-2 border-amber-600 hover:scale-105 active:scale-95 transition-all rounded-2xl"
