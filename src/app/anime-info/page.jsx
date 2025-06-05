@@ -405,10 +405,10 @@ export default function Info() {
                                   Episode №{element.attributes.number}
                                 </h1>
                                 <img
-                                  className="rounded-md w-[300px] h-[200px]"
+                                  className=" object-cover rounded-md w-[350px] h-[250px]"
                                   loading="lazy"
                                   src={element?.attributes?.thumbnail?.original}
-                                  alt="episode poster"
+                                  alt={`Episode ${element.attributes.number} With Poster`}
                                 />
                                 <h1 className="text-white font-medium text-lg text-center">
                                   {element.attributes.canonicalTitle}
@@ -421,9 +421,9 @@ export default function Info() {
                                 </h1>
                                 <img
                                   loading="lazy"
-                                  className="object-cover"
+                                  className=" object-cover w-[350px] h-[250px] rounded-md "
                                   src={anime.attributes.posterImage.original}
-                                  alt="noEpisode"
+                                  alt={`Episode №${element.attributes.number} Without Poster`}
                                 />
                                 <h1 className="text-white font-medium text-lg text-center">
                                   {element.attributes.canonicalTitle}
@@ -474,14 +474,14 @@ export default function Info() {
                           >
                             {element?.attributes?.image?.original ? (
                               <img
-                                className="object-cover rounded-md"
+                                className="object-cover rounded-md w-[220px] h-[250px]"
                                 loading="lazy"
                                 src={element?.attributes?.image?.original}
                                 alt={`Character:${element?.attributes?.canonicalName} Id:${element?.id}`}
                               />
                             ) : (
                               <img
-                                className="object-cover"
+                                className="object-cover [220px] h-[250px]"
                                 src={undefinedCharacter}
                                 alt={`Undefined Character:${element?.attributes?.canonicalName} id:${element?.id}`}
                               />
