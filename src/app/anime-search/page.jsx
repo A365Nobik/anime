@@ -1,29 +1,26 @@
-import { FaSearch } from "react-icons/fa";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
-import { useState, useRef, useEffect } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
-import ModalAnime from "../../components/ModalAnime";
+import { useState, useEffect } from "react";
+import ModalAnime from "../../components/modals/ModalAnime";
+import Header from "../../components/layout/header/Header";
 
+import { useSearchParams } from "react-router-dom";
 export default function Page() {
-  const [focus, setFocus] = useState(false);
-  const inputRef = useRef(null);
-  let navigate = useNavigate();
-  const [searchParams] = useSearchParams();
   const [modal, setModal] = useState(false);
   const apiUrl = import.meta.env.VITE_API_URL;
   const [selectedAnime, setSelectedAnime] = useState(null);
-  const [headerBg, setHeaderBg] = useState(false);
   const [searchData, setSearchData] = useState(null);
-  let query = searchParams.get("q");
-  async function findAnimeName() {
-    const value = inputRef.current.value;
-    navigate(`/result?q=${encodeURIComponent(value)}`);
-  }
+  const [searchParams] = useSearchParams();
+  const query = searchParams.get("q");
+  const [modalClose, setModalClose] = useState(false);
   function handleModalClick(element) {
     setSelectedAnime(element);
     setModal(true);
+    setTimeout(() => {
+      setModalClose(false);
+    }, 1);
   }
   useEffect(() => {
+    setModal(false);
     const findAnime = async () => {
       const response = await fetch(
         `${apiUrl}/anime?filter[text]=${query}&page[limit]=20&page[offset]=0`
@@ -41,46 +38,7 @@ export default function Page() {
   console.log(searchData);
   return (
     <>
-      <header
-        onMouseEnter={() => setHeaderBg(true)}
-        onMouseLeave={() => setHeaderBg(false)}
-        className={`sticky flex justify-between items-center w-full p-4 text-[#EAEFEF] z-1000 transition-colors duration-500  delay-100 ${
-          headerBg ? " bg-gray-800" : ""
-        }`}
-      >
-        <h1 className="text-4xl font-medium">Result Of Find For {query}</h1>
-        <a className="text-4xl font-medium" href="/">
-          Home
-        </a>
-        <div className="flex justify-center items-center">
-          <h1 className="mr-10 text-3xl font-medium">Search An Anime</h1>
-          <div
-            onFocus={() => setFocus(true)}
-            onBlur={() => setFocus(false)}
-            className={`flex justify-center items-center gap-2 ${
-              focus ? " bg-[#F5C45E]" : " bg-orange-500"
-            }  p-1 text-3xl rounded-lg transition-colors`}
-          >
-            <input
-              onKeyDown={(e) => {
-                if (e.key === "Enter") {
-                  findAnimeName();
-                }
-              }}
-              ref={inputRef}
-              type="text"
-              placeholder="Anime Name"
-              className="outline-0 w-200 bg-[#EAEFEF] p-0.5 placeholder:text-[#333446] text-[#333446] placeholder:font-medium font-medium focus:border-purple-500  rounded-sm"
-            />
-            <button
-              onClick={findAnimeName}
-              className="hover:scale-110 active:scale-90 transition-transform "
-            >
-              <FaSearch className="text-white" />
-            </button>
-          </div>
-        </div>
-      </header>
+      <Header page={"search"} />
       <main>
         <ul className="grid grid-cols-10 gap-2  justify-center items-center mt-35">
           {searchData && searchData.length > 0
@@ -126,8 +84,12 @@ export default function Page() {
           ""
         )}
         {modal ? (
-          <span className="flex justify-center items-center relative bottom-150 w-screen h-screen">
-            <ModalAnime setModal={setModal} anime={selectedAnime} />
+          <span className={`flex justify-center items-center relative bottom-175 w-screen h-screen transition-transform ${modalClose ? "scale-0" : "scale-100"}`}>
+            <ModalAnime
+              setModal={setModal}
+              anime={selectedAnime}
+              setModalClose={setModalClose}
+            />
           </span>
         ) : (
           ""

@@ -1,6 +1,5 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import {
-  FaSearch,
   FaCalendar,
   FaClock,
   FaVideo,
@@ -10,22 +9,18 @@ import {
   FaInfoCircle,
 } from "react-icons/fa";
 import { AiFillFastForward, AiOutlineLoading3Quarters } from "react-icons/ai";
-
-import ModalAnime from "../../components/ModalAnime";
-import { useNavigate } from "react-router-dom";
+import ModalAnime from "../../components/modals/ModalAnime";
+import Header from "../../components/layout/header/Header";
 export default function Page() {
   const [animeList, setAnimeList] = useState([]);
   const [trendingList, setTrendingList] = useState([]);
   const [animRight, setAnimRight] = useState(false);
   const [animLeft, setAnimLeft] = useState(false);
   const [modal, setModal] = useState(false);
-  const [focus, setFocus] = useState(false);
+  const [modalClose, setModalClose] = useState(false);
   const [selectedAnime, setSelectedAnime] = useState(null);
   const [currentAnimeNumber, setCurrentAnimeNumber] = useState(0);
-  const inputRef = useRef(null);
-  const [headerBg, setHeaderBg] = useState(false);
   const apiUrl = import.meta.env.VITE_API_URL;
-  let navigate = useNavigate();
   useEffect(() => {
     const getBanner = async () => {
       try {
@@ -109,52 +104,14 @@ export default function Page() {
   function handleModalClick(element) {
     setSelectedAnime(element);
     setModal(true);
+    setTimeout(() => {
+      setModalClose(false);
+    }, 1);
   }
-  async function findAnimeName() {
-    const value = inputRef.current.value;
-    navigate(`/result?q=${encodeURIComponent(value)}`);
-  }
-  const 
-  currentAnime = animeList[currentAnimeNumber];
+  const currentAnime = animeList[currentAnimeNumber];
   return (
     <>
-      <header
-        onMouseEnter={() => setHeaderBg(true)}
-        onMouseLeave={() => setHeaderBg(false)}
-        className={`sticky flex justify-between items-center w-full p-4 text-[#EAEFEF] z-1000 transition-colors duration-500  delay-100 ${
-          headerBg ? " bg-gray-800" : ""
-        }`}
-      >
-        <h1 className="text-4xl font-medium">Welcome To Anime Hub</h1>
-        <div className="flex justify-center items-center">
-          <h1 className="mr-10 text-3xl font-medium">Search An Anime</h1>
-          <div
-            onFocus={() => setFocus(true)}
-            onBlur={() => setFocus(false)}
-            className={`flex justify-center items-center gap-2 ${
-              focus ? " bg-[#F5C45E]" : " bg-orange-500"
-            }  p-1 text-3xl rounded-lg transition-colors`}
-          >
-            <input
-              onKeyDown={(e) => {
-                if (e.key === "Enter") {
-                  findAnimeName();
-                }
-              }}
-              ref={inputRef}
-              type="text"
-              placeholder="Anime Name"
-              className="outline-0 w-200 bg-[#EAEFEF] p-0.5 placeholder:text-[#333446] text-[#333446] placeholder:font-medium font-medium focus:border-purple-500  rounded-sm"
-            />
-            <button
-              onClick={findAnimeName}
-              className="hover:scale-110 active:scale-90 transition-transform "
-            >
-              <FaSearch className="text-white" />
-            </button>
-          </div>
-        </div>
-      </header>
+      <Header page={"home"} />
       <div
         className={`relative w-screen h-[600px] overflow-hidden bottom-20 ${
           animRight ? "right-slide" : ""
@@ -226,15 +183,15 @@ export default function Page() {
                   </button>
                 </div>
               </div>
-              <div className="flex justify-center items-center z-1001 gap-3 relative bottom-15 left-[35%] text-2xl ">
+              <div className="flex justify-center items-center z-1001 gap-3 relative bottom-15 left-[35%] text-2xl  ">
                 <button
-                  className="py-4 px-3 bg-black border-solid border-2 border-amber-600 hover:scale-105 active:scale-95 transition-all rounded-2xl"
+                  className="py-4 px-3 bg-black border-solid border-2 border-amber-600 hover:scale-105 active:scale-95 transition-all rounded-2xl cursor-pointer"
                   onClick={handleLeftClick}
                 >
                   <FaArrowLeft className="text-amber-600 " />
                 </button>
                 <button
-                  className="py-4 px-3 bg-black border-solid border-2 border-amber-600 hover:scale-105 active:scale-95 transition-all rounded-2xl"
+                  className="py-4 px-3 bg-black border-solid border-2 border-amber-600 hover:scale-105 active:scale-95 transition-all rounded-2xl cursor-pointer"
                   onClick={handleRightClick}
                 >
                   <FaArrowRight className="text-amber-600" />
@@ -290,11 +247,15 @@ export default function Page() {
         </div>
         {modal ? (
           <span
-            className={`flex justify-center items-center relative ${
-              window.scrollY >= 252 ? "bottom-250" : "bottom-300"
-            } w-screen h-screen`}
+            className={`flex justify-center items-center relative transition-transform ${
+              window.scrollY >= 252 ? "bottom-250" : "bottom-300 "
+            } w-screen h-screen ${modalClose ? "scale-0" : "scale-100"}`}
           >
-            <ModalAnime setModal={setModal} anime={selectedAnime} />
+            <ModalAnime
+              setModal={setModal}
+              anime={selectedAnime}
+              setModalClose={setModalClose}
+            />
           </span>
         ) : (
           ""

@@ -1,21 +1,23 @@
-import { useEffect, useState, useRef } from "react";
-import { useSearchParams, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
-import { FaSearch } from "react-icons/fa";
-
+import Header from "../../components/layout/header/Header";
 import undefinedCharacter from "../../../public/undefined.png";
+import { FaArrowRight, FaArrowLeft, FaVideo } from "react-icons/fa";
+import { MdOutlineDescription } from "react-icons/md";
+import Description from "../../components/modals/Description";
 export default function Info() {
   const [searchParams] = useSearchParams();
   const [anime, setAnime] = useState(null);
   const apiUrl = import.meta.env.VITE_API_URL;
-  const inputRef = useRef(null);
-  let navigate = useNavigate();
-  const [focus, setFocus] = useState(false);
-  const [headerBg, setHeaderBg] = useState(false);
   const [moreEpisodesLoaded, setMoreEpisodesLoaded] = useState(false);
+  const [moreCharactersLoaded, setMoreCharactersLoaded] = useState(false);
+  const [modal, setModal] = useState(false);
+  const [modalClose, setModalClose] = useState(false);
   const [steamLinks, setStreamLinks] = useState([]);
   let [episodes, setEpisodes] = useState([]);
-  let [offset, setOffset] = useState(0);
+  let [offsetEpisodes, setOffsetEpisodes] = useState(0);
+  let [offsetCharacters, setOffsetCharacters] = useState(0);
   let [characters, setCharacters] = useState([]);
   let [charactersCard, setCharactersCard] = useState([]);
 
@@ -34,9 +36,14 @@ export default function Info() {
       }
     };
     getAnimeInfo();
-    document.querySelector("body").classList.remove("overflow-hidden");
-  }, []);
-
+  }, [searchParams]);
+  useEffect(() => {
+    if (modal) {
+      document.querySelector("body").classList.add("overflow-y-hidden");
+    } else {
+      document.querySelector("body").classList.remove("overflow-y-hidden");
+    }
+  }, [modal]);
   useEffect(() => {
     if (anime) {
       const onlineLinks = async () => {
@@ -60,14 +67,14 @@ export default function Info() {
       const getEpisodes = async () => {
         try {
           const response = await fetch(
-            `${apiUrl}/anime/${anime.id}/episodes?page[offset]=${offset}&page[limit]=20`
+            `${apiUrl}/anime/${anime.id}/episodes?page[offset]=${offsetEpisodes}&page[limit]=20`
           );
           if (response.ok) {
             const json = await response.json();
             if (json.data.length === 0) {
               setMoreEpisodesLoaded(true);
             } else {
-              if (offset >= 20) {
+              if (offsetEpisodes >= 20) {
                 setEpisodes((prev) => prev.concat(json.data));
               } else {
                 setEpisodes(json.data);
@@ -80,17 +87,22 @@ export default function Info() {
       };
       getEpisodes();
     }
-  }, [anime, offset]);
+  }, [anime, offsetEpisodes]);
   useEffect(() => {
     if (anime) {
       const getCharacters = async () => {
         try {
           const response = await fetch(
-            `${apiUrl}/anime/${anime.id}/characters?page[offset]=0&page[limit]=20`
+            `${apiUrl}/anime/${anime.id}/characters?page[offset]=${offsetCharacters}&page[limit]=20`
           );
           if (response.ok) {
             const json = await response.json();
-            setCharacters(json.data);
+            if (json.data.length === 0) {
+              setMoreCharactersLoaded(true);
+            } else {
+              setMoreCharactersLoaded(false);
+              setCharacters(json.data);
+            }
           }
         } catch (error) {
           alert(error);
@@ -98,19 +110,22 @@ export default function Info() {
       };
       getCharacters();
     }
-  }, [anime]);
+  }, [anime, offsetCharacters]);
   useEffect(() => {
     if (anime && characters && characters.length > 0) {
       const getCharactersCard = async () => {
-        characters.map(async (element) => {
-          const response = await fetch(
-            `${element.relationships.character.links.related}`
+        try {
+          const characterPromises = characters.map((element) =>
+            fetch(element.relationships.character.links.related)
+              .then((response) => response.json())
+              .then((json) => json.data)
           );
-          if (response.ok) {
-            const json = await response.json();
-            setCharactersCard((prev) => prev.concat(json.data));
-          }
-        });
+
+          const characterData = await Promise.all(characterPromises);
+          setCharactersCard(characterData);
+        } catch (error) {
+          console.error("Error fetching character details:", error);
+        }
       };
       getCharactersCard();
     }
@@ -147,8 +162,8 @@ export default function Info() {
         case "animelab": {
           return "https://img.icons8.com/?size=512&id=ImtaJYOCNBG4&format=png";
         }
-        case "tubitv":{
-          return "https://www.logo.wine/a/logo/Tubi/Tubi-Logo.wine.svg"
+        case "tubitv": {
+          return "https://www.logo.wine/a/logo/Tubi/Tubi-Logo.wine.svg";
         }
       }
     } catch (error) {
@@ -157,73 +172,9 @@ export default function Info() {
     }
   }
 
-  async function findAnimeName() {
-    const value = inputRef.current.value;
-    try {
-      const response = await fetch(`${apiUrl}/anime?filter[text]=${value}`);
-      if (response.ok) {
-        const json = await response.json();
-        navigate(`/result?q=${encodeURIComponent(value)}`, {
-          state: {
-            searchData: json.data,
-          },
-        });
-      }
-    } catch (error) {
-      alert(error);
-    }
-  }
-
-  console.log(anime);
-  console.log(steamLinks);
-  console.log(episodes);
-  console.log(characters);
-  console.log(charactersCard);
   return (
     <>
-      <header
-        onMouseEnter={() => setHeaderBg(true)}
-        onMouseLeave={() => setHeaderBg(false)}
-        className={` sticky flex  justify-between items-center w-full p-4 text-[#EAEFEF] z-1000 transition-colors duration-500  delay-100 ${
-          headerBg ? " bg-gray-800" : ""
-        } `}
-      >
-        <h1 className="text-4xl font-medium text-center">
-          Info About {searchParams.get("q")}
-        </h1>
-        <a className="text-4xl font-medium" href="/">
-          Home
-        </a>
-        <div className="flex justify-center items-center">
-          <h1 className="mr-10 text-3xl font-medium">Search An Anime</h1>
-          <div
-            onFocus={() => setFocus(true)}
-            onBlur={() => setFocus(false)}
-            className={`flex justify-center items-center gap-2 ${
-              focus ? " bg-[#F5C45E]" : " bg-orange-500"
-            }  p-1 text-3xl rounded-lg transition-colors`}
-          >
-            <input
-              onKeyDown={(e) => {
-                if (e.key === "Enter") {
-                  findAnimeName();
-                }
-              }}
-              ref={inputRef}
-              type="text"
-              placeholder="Anime Name"
-              className="outline-0 w-200 bg-[#EAEFEF] p-0.5 placeholder:text-[#333446] text-[#333446] placeholder:font-medium font-medium focus:border-purple-500  rounded-sm"
-            />
-            <button
-              onClick={findAnimeName}
-              className="hover:scale-110 active:scale-90 transition-transform "
-            >
-              <FaSearch className="text-white" />
-            </button>
-          </div>
-        </div>
-      </header>
-
+      <Header page={"info"} />
       <div className="relative w-screen h-[450px] overflow-hidden bottom-20">
         <img
           className="object-cover w-full h-full"
@@ -242,7 +193,7 @@ export default function Info() {
                 </h1>
               </span>
             </div>
-            <div className="flex justify-start gap-1">
+            <div className="flex justify-start gap-2">
               <div className="flex justify-start items-start ml-5 relative bottom-40">
                 <div className="flex flex-col justify-center items-center">
                   <img
@@ -292,10 +243,10 @@ export default function Info() {
                   )}
                 </div>
               </div>
-              <div className="w-[500px]  border-2 border-gray-600 rounded-lg relative bottom-15">
+              <div className="w-[500px]  border-2 border-orange-500 rounded-lg relative bottom-15">
                 <div className="flex flex-col justify-center items-center ">
                   <h1 className="text-2xl text-white font-medium">Details</h1>
-                  <hr className="w-full text-gray-600" />
+                  <hr className="w-full text-orange-500" />
                 </div>
                 <ul className="flex flex-col gap-4 justify-start items-start">
                   <li className="flex  items-center text-white font-medium text-lg ml-2 gap-4 text-left">
@@ -395,54 +346,70 @@ export default function Info() {
                     </h1>
                   </li>
                 </ul>
+                <div className="flex justify-center items-center gap-4 mt-5">
+                  <button className="flex justify-center items-center bg-orange-500 p-1 gap-1 rounded-2xl  text-lg font-medium transition-transform hover:scale-110 active:scale-90 text-white">
+                    <FaVideo />
+                    Watch Trailer
+                  </button>
+                  <button
+                    className="flex justify-center items-center bg-orange-500 p-1 gap-1 rounded-2xl  text-lg font-medium transition-transform hover:scale-110 active:scale-90 text-white"
+                    onClick={() => {
+                      setModal(true);
+                      setTimeout(() => {
+                        setModalClose(false);
+                      }, 1);
+                    }}
+                  >
+                    <MdOutlineDescription />
+                    Read Description
+                  </button>
+                </div>
               </div>
-              <div className="w-[500px]  border-2 border-gray-600 rounded-lg relative bottom-15 ">
+              <div className="w-[500px]  border-2 border-orange-500 rounded-lg relative bottom-15 ">
                 <div className="flex flex-col justify-center items-center ">
                   <h1 className="text-2xl text-white font-medium">Episodes</h1>
-                  <hr className="w-full text-gray-600" />
+                  <hr className="w-full text-orange-500" />
                 </div>
-                <ul className="grid grid-5 justify-center items-center  overflow-y-auto h-[500px] gap-2 p-1 ">
+                <div className="grid grid-5 justify-center items-center  overflow-y-auto h-[600px] gap-2 p-1 ">
                   {anime && episodes ? (
                     episodes.map((element) => {
                       return (
-                        <>
-                          <li
-                            key={element.id}
-                            className="border-2 rounded-md border-white flex flex-col justify-center items-center p-1"
-                          >
-                            {element?.attributes?.thumbnail ? (
-                              <>
-                                <h1 className="text-white font-medium text-lg">
-                                  Episode №{element.attributes.number}
-                                </h1>
-                                <img
-                                  className=" object-cover rounded-md w-[400px] h-[250px]"
-                                  loading="lazy"
-                                  src={element?.attributes?.thumbnail?.original}
-                                  alt={`Episode ${element.attributes.number} With Poster`}
-                                />
-                                <h1 className="text-white font-medium text-lg text-center">
-                                  {element.attributes.canonicalTitle}
-                                </h1>
-                              </>
-                            ) : (
-                              <>
-                                <h1 className="text-white font-medium text-lg">
-                                  Episode №{element.attributes.number}
-                                </h1>
-                                <img
-                                  loading="lazy"
-                                  className=" object-cover w-[400px] h-[250px] rounded-md "
-                                  src={anime.attributes.posterImage.original}
-                                  alt={`Episode №${element.attributes.number} Without Poster`}
-                                />
-                                <h1 className="text-white font-medium text-lg text-center">
-                                  {element.attributes.canonicalTitle}
-                                </h1>
-                              </>
-                            )}
-                          </li>
-                        </>
+                        <div
+                          key={element.id}
+                          className="border-2 rounded-md border-white flex flex-col justify-center items-center p-1"
+                        >
+                          {element?.attributes?.thumbnail ? (
+                            <>
+                              <h1 className="text-white font-medium text-lg">
+                                Episode №{element.attributes.number}
+                              </h1>
+                              <img
+                                className=" object-cover rounded-md w-[400px] h-[250px]"
+                                loading="lazy"
+                                src={element?.attributes?.thumbnail?.original}
+                                alt={`Episode ${element.attributes.number} With Poster`}
+                              />
+                              <h1 className="text-white font-medium text-lg text-center">
+                                {element.attributes.canonicalTitle}
+                              </h1>
+                            </>
+                          ) : (
+                            <>
+                              <h1 className="text-white font-medium text-lg">
+                                Episode №{element.attributes.number}
+                              </h1>
+                              <img
+                                loading="lazy"
+                                className=" object-cover w-[400px] h-[250px] rounded-md "
+                                src={anime.attributes.posterImage.original}
+                                alt={`Episode №${element.attributes.number} Without Poster`}
+                              />
+                              <h1 className="text-white font-medium text-lg text-center">
+                                {element.attributes.canonicalTitle}
+                              </h1>
+                            </>
+                          )}
+                        </div>
                       );
                     })
                   ) : (
@@ -454,10 +421,10 @@ export default function Info() {
                     {moreEpisodesLoaded === false ? (
                       <button
                         onClick={() => {
-                          setOffset((prev) => prev + 20);
-                          console.log(offset);
+                          setOffsetEpisodes((prev) => prev + 20);
+                          console.log(offsetEpisodes);
                         }}
-                        className=" bg-orange-500 w-2/4 p-1 rounded-2xl   font-medium transition-transform hover:scale-110 active:scale-90 text-white"
+                        className=" bg-orange-500 w-2/4 p-1 rounded-2xl   font-medium transition-transform hover:scale-110 active:scale-90 text-white cursor-pointer"
                       >
                         Load More Episodes
                       </button>
@@ -465,32 +432,36 @@ export default function Info() {
                       ""
                     )}
                   </span>
-                </ul>
+                </div>
               </div>
-              <div className="w-[1000px]  border-2 border-gray-600 rounded-lg relative bottom-15 ">
+              <div className="w-[1000px]  border-2 border-orange-500 rounded-lg relative bottom-15 ">
                 <div className="flex flex-col justify-center items-center">
                   <h1 className="text-2xl text-white font-medium">
                     Characters
                   </h1>
-                  <hr className="w-full text-gray-600" />
+                  <hr className="w-full text-orange-500" />
                 </div>
-                {characters.length === 0 || charactersCard.length === 0 ? (
-                  <span className="flex flex-col justify-center items-center text-3xl text-white font-bold  gap-2">
-                    <h1 className="text-center">
-                      Loading Anime Data Or Characters For This Anime Are
-                      Missing
-                    </h1>
-                    <AiOutlineLoading3Quarters className="animate-spin" />
-                  </span>
-                ) : (
-                  ""
-                )}
-                <ul className="grid grid-cols-5 justify-center items-center  overflow-y-auto h-[500px] gap-2 p-1">
-                  {anime && characters && characters.length > 0
-                    ? charactersCard.map((element) => {
-                        return (
-                          <>
-                            <li
+                <div>
+                  <div
+                    className={`grid ${
+                      charactersCard.length === 0 ? "" : "grid-cols-5"
+                    } justify-center items-center  overflow-y-auto  h-[600px] gap-2 p-1`}
+                  >
+                    {characters.length === 0 || charactersCard.length === 0 ? (
+                      <div className="flex justify-center items-center text-2xl text-white font-bold  gap-2 h-max">
+                        <h1 className="text-center">
+                          Loading Anime Data Or Characters For This Anime Are
+                          Missing
+                        </h1>
+                        <AiOutlineLoading3Quarters className="animate-spin" />
+                      </div>
+                    ) : (
+                      ""
+                    )}
+                    {anime && characters && characters.length > 0
+                      ? charactersCard.map((element) => {
+                          return (
+                            <div
                               key={element.id}
                               className="h-[325px] border-2 border-white flex flex-col justify-center items-center p-1  rounded-lg"
                             >
@@ -511,14 +482,50 @@ export default function Info() {
                               <h1 className="text-white font-medium text-lg text-center">
                                 {element?.attributes?.canonicalName}
                               </h1>
-                            </li>
-                          </>
-                        );
-                      })
-                    : ""}
-                </ul>
+                            </div>
+                          );
+                        })
+                      : ""}
+                  </div>
+                  <hr className="w-full text-orange-500 my-1" />
+                  <div className="flex justify-center items-center gap-2">
+                    <button
+                      disabled={offsetCharacters === 0}
+                      onClick={() => {
+                        setOffsetCharacters((prev) => prev - 20);
+                      }}
+                      className="p-1 bg-black border-solid border-2 border-amber-600 hover:scale-105 active:scale-95 transition-all rounded-2xl cursor-pointer"
+                    >
+                      <FaArrowLeft className="text-amber-600 " />
+                    </button>
+                    <button
+                      disabled={moreCharactersLoaded}
+                      onClick={() => {
+                        setOffsetCharacters((prev) => prev + 20);
+                      }}
+                      className="p-1 bg-black border-solid border-2 border-amber-600 hover:scale-105 active:scale-95 transition-all rounded-2xl cursor-pointer"
+                    >
+                      <FaArrowRight className="text-amber-600 " />
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
+            {modal ? (
+              <span
+                className={`flex justify-center items-center  w-screen h-screen relative bottom-320 transition-transform ${
+                  modalClose ? "scale-0" : "scale-100 delay-100"
+                }`}
+              >
+                <Description
+                  description={anime.attributes.description}
+                  setModal={setModal}
+                  setModalClose={setModalClose}
+                />
+              </span>
+            ) : (
+              ""
+            )}
           </main>
         </>
       ) : (
