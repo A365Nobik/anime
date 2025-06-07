@@ -173,7 +173,6 @@ export default function Info() {
       return "https://www.svgrepo.com/show/459055/error-outline.svg";
     }
   }
-
   return (
     <>
       <Header page={"info"} />
@@ -485,7 +484,7 @@ export default function Info() {
                               ) : (
                                 <img
                                   className="object-cover [220px] h-[250px]"
-                                  src={undefinedCharacter}
+                                  src="https://cdn-icons-png.flaticon.com/512/456/456212.png"
                                   alt={`Undefined Character:${element?.attributes?.canonicalName} id:${element?.id}`}
                                 />
                               )}
