@@ -261,7 +261,7 @@ export default function Page() {
         </div>
         {modal ? (
           <div
-            className={`bg-black/60 inset-0 fixed duration-50 transition-opacity z-1003 ${
+            className={`bg-black/80 inset-0 fixed duration-350 transition-opacity z-1003 ${
               modalClose ? "opacity-0" : "opacity-100"
             }`}
           >
@@ -270,9 +270,9 @@ export default function Page() {
                 setModalClose(true);
                 setTimeout(() => {
                   setModal(false);
-                }, 100);
+                }, 350);
               }}
-              className={`fixed inset-0 flex justify-center items-center 0 z-1001 transition-transform ${
+              className={`fixed inset-0 flex justify-center items-center  z-1001 transition-transform duration-350 delay-75 ${
                 modalClose ? "scale-0" : "scale-100"
               }`}
             >

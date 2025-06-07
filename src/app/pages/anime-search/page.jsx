@@ -62,11 +62,11 @@ export default function Page() {
                             alt="posterImage"
                           />
                         ) : (
-                            <img
-                              className="w-50 h-65 rounded-lg max-lg:w-40 max-lg:h-55"
-                              src={unkPoster}
-                              alt="Unknown posterImage"
-                            />
+                          <img
+                            className="w-50 h-65 rounded-lg max-lg:w-40 max-lg:h-55"
+                            src={unkPoster}
+                            alt="Unknown posterImage"
+                          />
                         )}
                         <h1 className="text-lg text-center text-white font-medium whitespace-nowrap overflow-hidden text-ellipsis">
                           {element.attributes.canonicalTitle.length > 15
@@ -97,18 +97,22 @@ export default function Page() {
           ""
         )}
         {modal ? (
-          <span
-            onClick={() => {
-              setModalClose(true);
-              setTimeout(() => {
-                setModal(false);
-              }, 100);
-            }}
-            className={`flex justify-center items-center  transition-transform fixed inset-0 bg-black/50
-             ${modalClose ? "scale-0" : "scale-100"}`}
-          >
-            <ModalAnime anime={selectedAnime} />
-          </span>
+          <div className={`bg-black/80 inset-0 fixed duration-350 transition-opacity z-1003 ${
+              modalClose ? "opacity-0" : "opacity-100"
+            }`}>
+            <span
+              onClick={() => {
+                setModalClose(true);
+                setTimeout(() => {
+                  setModal(false);
+                }, 350);
+              }}
+              className={`flex justify-center items-center  transition-transform fixed inset-0 duration-350 delay-75
+              ${modalClose ? "scale-0" : "scale-100"}`}
+            >
+              <ModalAnime anime={selectedAnime} />
+            </span>
+          </div>
         ) : (
           ""
         )}

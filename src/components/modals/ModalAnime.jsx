@@ -36,30 +36,34 @@ export default function ModalAnime({ anime }) {
               </span>
             )}
             <div className="flex flex-col justify-center items- max-s:justify-start">
-              <div className="flex justify-center items-center gap-2 max-s:gap-0.5   text-orange-500  font-medium max-s:justify-start max-s:text-sm">
-                <span className="flex justify-center items-center gap-1 max-s:gap-0">
-                  <FaPlay />
-                  <h1>
-                    {anime.attributes.subtype[0].toUpperCase()}
-                    {anime.attributes.subtype.slice(1, 5)}
-                  </h1>
-                </span>
-                <span className="flex justify-center items-center gap-1 max-s:gap-0  w-max ">
-                  <FaCalendar />
-                  <h1>{anime.attributes.startDate}</h1>
-                </span>
-                {anime?.attributes?.episodeCount ? (
-                  <span className="flex justify-center items-center  max-s:gap-0 gap-1">
-                    <AiFillFastForward className="text-2xl" />
-                    <h1>{anime.attributes.episodeCount}</h1>
+              <div className="flex justify-center items-center gap-2 max-m:gap-5   text-orange-500  font-medium max-s:justify-start max-s:text-sm">
+                <div className="flex max-m:flex-col justify-center items-center gap-1">
+                  <span className="flex justify-center items-center gap-1 max-s:gap-0">
+                    <FaPlay />
+                    <h1>
+                      {anime.attributes.subtype[0].toUpperCase()}
+                      {anime.attributes.subtype.slice(1, 5)}
+                    </h1>
                   </span>
-                ) : (
-                  ""
-                )}
-                <span className="flex justify-center items-center gap-1 max-s:gap-0">
-                  <FaClock />
-                  <h1>{anime.attributes.episodeLength}m</h1>
-                </span>
+                  <span className="flex justify-center items-center gap-1 max-s:gap-0  w-max ">
+                    <FaCalendar />
+                    <h1>{anime.attributes.startDate}</h1>
+                  </span>
+                </div>
+                <div className="flex max-m:flex-col justify-center items-center gap-1">
+                  {anime?.attributes?.episodeCount ? (
+                    <span className="flex justify-center items-center  max-s:gap-0 gap-1">
+                      <AiFillFastForward className="text-2xl" />
+                      <h1>{anime.attributes.episodeCount}</h1>
+                    </span>
+                  ) : (
+                    ""
+                  )}
+                  <span className="flex justify-center items-center gap-1 max-s:gap-0">
+                    <FaClock />
+                    <h1>{anime.attributes.episodeLength}m</h1>
+                  </span>
+                </div>
               </div>
               <span className="overflow-y-auto w-max h-100 max-lg:h-60 max-s:h-45 ">
                 <h1
