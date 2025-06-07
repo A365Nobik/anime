@@ -348,18 +348,22 @@ export default function Info() {
                   </li>
                 </ul>
                 <div className="flex justify-center items-center gap-4 mt-5">
-                  <button
-                    onClick={() => {
-                      setModalTrailer(true);
-                      setTimeout(() => {
-                        setModalClose(false);
-                      }, 1);
-                    }}
-                    className="flex justify-center items-center bg-orange-500 p-1 gap-1 rounded-2xl  text-lg font-medium transition-transform hover:scale-110 active:scale-90 text-white"
-                  >
-                    <FaVideo />
-                    Watch Trailer
-                  </button>
+                  {anime.attributes.youtubeVideoId ? (
+                    <button
+                      onClick={() => {
+                        setModalTrailer(true);
+                        setTimeout(() => {
+                          setModalClose(false);
+                        }, 1);
+                      }}
+                      className="flex justify-center items-center bg-orange-500 p-1 gap-1 rounded-2xl  text-lg font-medium transition-transform hover:scale-110 active:scale-90 text-white"
+                    >
+                      <FaVideo />
+                      Watch Trailer
+                    </button>
+                  ) : (
+                    ""
+                  )}
                   <button
                     className="flex justify-center items-center bg-orange-500 p-1 gap-1 rounded-2xl  text-lg font-medium transition-transform hover:scale-110 active:scale-90 text-white"
                     onClick={() => {
@@ -427,7 +431,7 @@ export default function Info() {
                     </span>
                   )}
                   <span className="flex justify-center items-center">
-                    {moreEpisodesLoaded === false && episodes.length===20 ? (
+                    {moreEpisodesLoaded === false && episodes.length === 20 ? (
                       <button
                         onClick={() => {
                           setOffsetEpisodes((prev) => prev + 20);

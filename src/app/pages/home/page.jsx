@@ -247,8 +247,8 @@ export default function Page() {
           </ul>
         </div>
         {modal ? (
-          <div className="bg-black/60 inset-0 fixed">
-            <span
+          <div className={`bg-black/60 inset-0 fixed duration-50 transition-opacity ${modalClose?"opacity-0":"opacity-100"}`}>
+            <div
               onClick={() => {
                 setModalClose(true);
                 setTimeout(() => {
@@ -260,7 +260,7 @@ export default function Page() {
               }`}
             >
               <ModalAnime anime={selectedAnime} />
-            </span>
+            </div>
           </div>
         ) : (
           ""

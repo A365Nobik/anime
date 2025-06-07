@@ -24,7 +24,7 @@ export default function Header({ page }) {
         break;
       }
       case "info": {
-        setPageH1(`Info About ${searchParams.get("q")}`);
+        setPageH1(`Info About ${searchParams.get("q").length>40?searchParams.get("q").slice(0,40)+`...`:searchParams.get("q")}`);
         break;
       }
     }
