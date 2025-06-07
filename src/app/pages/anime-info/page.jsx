@@ -427,7 +427,7 @@ export default function Info() {
                     </span>
                   )}
                   <span className="flex justify-center items-center">
-                    {moreEpisodesLoaded === false ? (
+                    {moreEpisodesLoaded === false && episodes.length===20 ? (
                       <button
                         onClick={() => {
                           setOffsetEpisodes((prev) => prev + 20);
