@@ -231,7 +231,7 @@ export default function Info() {
               </div>
             </div>
             <div className="flex justify-center items-center gap-2">
-              <div className="flex justify-center items-center relative bottom-20">
+              <div className="flex justify- items-center relative bottom-20">
                 <div className="flex flex-col justify-center items-center max-3xl:w-55">
                   <img
                     className="rounded-md max-3xl:w-50"

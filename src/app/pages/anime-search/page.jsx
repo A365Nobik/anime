@@ -45,7 +45,7 @@ export default function Page() {
     <>
       <Header page={"search"} />
       <main>
-        <ul className="grid grid-cols-10 gap-2 ml-5 justify-center items-center mt-35 result-list max-3xl:grid-cols-6 max-xl:grid-cols-5 max-lg:grid-cols-3 max-md:grid-cols-2">
+        <ul className="grid grid-cols-10 gap-2 justify-center items-center mt-35 result-list max-3xl:grid-cols-6 max-xl:grid-cols-5 max-lg:grid-cols-3 max-s:grid-cols-2">
           {searchData && searchData.length > 0
             ? searchData.map((element) => {
                 return (
