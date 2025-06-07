@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
-import Header from "../../components/layout/header/Header";
-import undefinedCharacter from "../../../public/undefined.png";
+import Header from "../../../components/layout/header/Header";
 import { FaArrowRight, FaArrowLeft, FaVideo } from "react-icons/fa";
 import { MdOutlineDescription } from "react-icons/md";
-import Description from "../../components/modals/Description";
-import Trailer from "../../components/modals/Trailer";
+import Description from "../../../components/modals/Description";
+import Trailer from "../../../components/modals/Trailer";
 export default function Info() {
   const [searchParams] = useSearchParams();
   const [anime, setAnime] = useState(null);

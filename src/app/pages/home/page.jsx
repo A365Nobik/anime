@@ -9,8 +9,8 @@ import {
   FaInfoCircle,
 } from "react-icons/fa";
 import { AiFillFastForward, AiOutlineLoading3Quarters } from "react-icons/ai";
-import ModalAnime from "../../components/modals/ModalAnime";
-import Header from "../../components/layout/header/Header";
+import ModalAnime from "../../../components/modals/ModalAnime";
+import Header from "../../../components/layout/header/Header";
 export default function Page() {
   const [animeList, setAnimeList] = useState([]);
   const [trendingList, setTrendingList] = useState([]);

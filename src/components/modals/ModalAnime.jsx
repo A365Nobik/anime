@@ -1,4 +1,3 @@
-import { IoIosCloseCircle } from "react-icons/io";
 import {
   FaCalendar,
   FaClock,

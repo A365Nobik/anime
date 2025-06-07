@@ -1,7 +1,7 @@
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { useState, useEffect } from "react";
-import ModalAnime from "../../components/modals/ModalAnime";
-import Header from "../../components/layout/header/Header";
+import ModalAnime from "../../../components/modals/ModalAnime";
+import Header from "../../../components/layout/header/Header";
 
 import { useSearchParams } from "react-router-dom";
 export default function Page() {

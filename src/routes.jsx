@@ -1,8 +1,8 @@
 import { Route, Routes } from "react-router-dom";
-import Home from "./app/home/page";
-import NotFound from "./app/NotFound";
-import SearchResult from "./app/anime-search/page";
-import AnimeInfo from "./app/anime-info/page";
+import Home from "./app/pages/home/page";
+import NotFound from "./app/pages/NotFound";
+import SearchResult from "./app/pages/anime-search/page";
+import AnimeInfo from "./app/pages/anime-info/page";
 
 export default function App() {
   return (
