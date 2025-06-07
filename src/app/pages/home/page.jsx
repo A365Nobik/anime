@@ -116,20 +116,20 @@ export default function Page() {
       <div
         className={`relative w-screen h-150 overflow-hidden bottom-20 ${
           animRight ? "right-slide" : ""
-        } ${animLeft ? "left-slide" : ""} max-xl:h-100 `}
+        } ${animLeft ? "left-slide" : ""} max-xl:h-100  `}
       >
         <img
           className="object-cover w-full h-full "
           src={currentAnime?.attributes?.coverImage?.large}
           alt=""
         />
-        <div className="absolute inset-0 bg-gray-950/50">
+        <div className=" max-x:flex max-x:flex-col max-x:justify-center max-x:items-center max-x:gap-3 absolute inset-0 bg-gray-950/50 ">
           {animeList &&
           animeList.length > 0 &&
           currentAnime &&
           currentAnime.attributes ? (
             <>
-              <div className="flex flex-col justify-center items-center ml-5 mt-80 bg-black/50 text-white p-2 rounded-2xl h-60 w-200 max-xl:mt-30 max-xl:w-125 max-md:w-100 max-sm:w-75 max-sm:ml-1">
+              <div className="flex flex-col justify-center items-center ml-5 mt-80 bg-black/50 text-white p-2 rounded-2xl h-60 w-200 max-xl:mt-30 max-xl:w-125 max-md:w-100 max-sm:w-75 max-sm:ml-1 max-x:mt-15">
                 <h1 className="text-4xl font-bold max-xl:text-2xl max-sm:text-lg">
                   {currentAnime.attributes.titles.en
                     ? currentAnime.attributes.titles.en
@@ -162,9 +162,9 @@ export default function Page() {
                   </span>
                 </div>
                 <h1 className="w-100 font-medium max-sm:text-sm text-center max-sm:w-50">
-                  {window.screen.width<768?(
-                    currentAnime.attributes.description.slice(0, 100)
-                  ):currentAnime.attributes.description.slice(0, 200)}...
+                    {window.screen.width<768?(
+                      currentAnime.attributes.description.slice(0, 100)
+                    ):currentAnime.attributes.description.slice(0, 200)}...
                 </h1>
                 <div className="flex justify-center items-center gap-3 mt-1 max-sm:flex-col">
                   <button className="flex justify-center items-center bg-orange-500 p-2 gap-1 rounded-2xl  text-lg font-medium transition-transform hover:scale-110 active:scale-90 max-xl:p-1 max-sm:w-40">
@@ -186,15 +186,15 @@ export default function Page() {
                   </button>
                 </div>
               </div>
-              <div className="flex justify-center items-center z-1001 gap-3 relative bottom-15 left-[35%] text-2xl  ">
+              <div className="flex justify-center items-center z-1001 gap-3 relative bottom-15 left-[35%] text-2xl max-x:left-0 max-x:bottom-0 ">
                 <button
-                  className="py-4 px-3 bg-black border-solid border-2 border-amber-600 hover:scale-105 active:scale-95 transition-all rounded-2xl cursor-pointer xl:py-5 xl:px-4 max-sm:py-2.5 max-sm:px-2"
+                  className="py-4 px-3 bg-black border-solid border-2 border-amber-600 hover:scale-105 active:scale-95 transition-all rounded-2xl cursor-pointer xl:py-5 xl:px-4 max-sm:py-2.5 max-sm:px-2 max-x:px-1 max-x:py-1"
                   onClick={handleLeftClick}
                 >
                   <FaArrowLeft className="text-amber-600 " />
                 </button>
                 <button
-                  className="py-4 px-3 bg-black border-solid border-2 border-amber-600 hover:scale-105 active:scale-95 transition-all rounded-2xl cursor-pointer xl:py-5 xl:px-4 max-sm:py-2.5 max-sm:px-2"
+                  className="py-4 px-3 bg-black border-solid border-2 border-amber-600 hover:scale-105 active:scale-95 transition-all rounded-2xl cursor-pointer xl:py-5 xl:px-4 max-sm:py-2.5 max-sm:px-2 max-x:px-1 max-x:py-1"
                   onClick={handleRightClick}
                 >
                   <FaArrowRight className="text-amber-600" />
