@@ -114,12 +114,12 @@ export default function Page() {
     <>
       <Header page={"home"} />
       <div
-        className={`relative w-screen h-[600px] overflow-hidden bottom-20 ${
+        className={`relative w-screen h-150 overflow-hidden bottom-20 ${
           animRight ? "right-slide" : ""
-        } ${animLeft ? "left-slide" : ""} `}
+        } ${animLeft ? "left-slide" : ""} max-xl:h-100 `}
       >
         <img
-          className="object-cover w-full h-full"
+          className="object-cover w-full h-full "
           src={currentAnime?.attributes?.coverImage?.large}
           alt=""
         />
@@ -129,8 +129,8 @@ export default function Page() {
           currentAnime &&
           currentAnime.attributes ? (
             <>
-              <div className="flex flex-col justify-center items-center ml-5 mt-80 bg-black/50 text-white p-2 rounded-2xl h-60 w-200 ">
-                <h1 className="text-4xl font-bold">
+              <div className="flex flex-col justify-center items-center ml-5 mt-80 bg-black/50 text-white p-2 rounded-2xl h-60 w-200 max-xl:mt-30 max-xl:w-125 max-md:w-100 max-sm:w-75 max-sm:ml-1">
+                <h1 className="text-4xl font-bold max-xl:text-2xl max-sm:text-lg">
                   {currentAnime.attributes.titles.en
                     ? currentAnime.attributes.titles.en
                     : currentAnime.attributes.titles.en_jp}
@@ -161,11 +161,13 @@ export default function Page() {
                     <h1>{currentAnime.attributes.episodeLength}m</h1>
                   </span>
                 </div>
-                <h1 className="w-100 font-medium">
-                  {currentAnime.attributes.description.slice(0, 200)}...
+                <h1 className="w-100 font-medium max-sm:text-sm text-center max-sm:w-50">
+                  {window.screen.width<768?(
+                    currentAnime.attributes.description.slice(0, 100)
+                  ):currentAnime.attributes.description.slice(0, 200)}...
                 </h1>
-                <div className="flex justify-center items-center gap-3 mt-1">
-                  <button className="flex justify-center items-center bg-orange-500 p-2 gap-1 rounded-2xl  text-lg font-medium transition-transform hover:scale-110 active:scale-90">
+                <div className="flex justify-center items-center gap-3 mt-1 max-sm:flex-col">
+                  <button className="flex justify-center items-center bg-orange-500 p-2 gap-1 rounded-2xl  text-lg font-medium transition-transform hover:scale-110 active:scale-90 max-xl:p-1 max-sm:w-40">
                     <FaVideo />
                     <a
                       target="blanc"
@@ -174,7 +176,7 @@ export default function Page() {
                       Watch Trailer
                     </a>
                   </button>
-                  <button className="flex justify-center items-center bg-orange-500 p-2 gap-1 rounded-2xl  text-lg font-medium transition-transform hover:scale-110 active:scale-90">
+                  <button className="flex justify-center items-center bg-orange-500 p-2 gap-1 rounded-2xl  text-lg font-medium transition-transform hover:scale-110 active:scale-90 max-xl:p-1 max-sm:w-45">
                     <FaInfoCircle />
                     <a
                       href={`/info?q=${currentAnime.attributes.canonicalTitle}`}
@@ -186,13 +188,13 @@ export default function Page() {
               </div>
               <div className="flex justify-center items-center z-1001 gap-3 relative bottom-15 left-[35%] text-2xl  ">
                 <button
-                  className="py-4 px-3 bg-black border-solid border-2 border-amber-600 hover:scale-105 active:scale-95 transition-all rounded-2xl cursor-pointer"
+                  className="py-4 px-3 bg-black border-solid border-2 border-amber-600 hover:scale-105 active:scale-95 transition-all rounded-2xl cursor-pointer xl:py-5 xl:px-4 max-sm:py-2.5 max-sm:px-2"
                   onClick={handleLeftClick}
                 >
                   <FaArrowLeft className="text-amber-600 " />
                 </button>
                 <button
-                  className="py-4 px-3 bg-black border-solid border-2 border-amber-600 hover:scale-105 active:scale-95 transition-all rounded-2xl cursor-pointer"
+                  className="py-4 px-3 bg-black border-solid border-2 border-amber-600 hover:scale-105 active:scale-95 transition-all rounded-2xl cursor-pointer xl:py-5 xl:px-4 max-sm:py-2.5 max-sm:px-2"
                   onClick={handleRightClick}
                 >
                   <FaArrowRight className="text-amber-600" />
@@ -208,11 +210,11 @@ export default function Page() {
         </div>
       </div>
       <main>
-        <div className="ml-5 relative bottom-15 flex flex-col  ">
-          <h1 className="text-white text-5xl font-medium mb-5  ">
+        <div className="ml-5 relative bottom-15 flex flex-col max-lg:ml-1 ">
+          <h1 className="text-white text-5xl font-medium mb-5 max-xl:text-3xl  ">
             Trending Anime
           </h1>
-          <ul className="grid grid-cols-10 gap-2  justify-center items-center">
+          <ul className="grid grid-cols-10 gap-2  justify-center items-center trending-list max-2xl:grid-cols-5 max-lg:grid-cols-4  max-md:grid-cols-3">
             {trendingList && trendingList.length > 0 ? (
               trendingList.map((element) => {
                 return (
@@ -223,7 +225,7 @@ export default function Page() {
                     >
                       <span className="flex flex-col items-start justify-center">
                         <img
-                          className="w-50 h-65 rounded-lg"
+                          className="w-50 h-65 rounded-lg max-lg:w-40 max-lg:h-55"
                           src={element.attributes.posterImage.original}
                           alt="posterImage"
                         />
@@ -247,7 +249,7 @@ export default function Page() {
           </ul>
         </div>
         {modal ? (
-          <div className={`bg-black/60 inset-0 fixed duration-50 transition-opacity ${modalClose?"opacity-0":"opacity-100"}`}>
+          <div className={`bg-black/60 inset-0 fixed duration-50 transition-opacity z-1003 ${modalClose?"opacity-0":"opacity-100"}`}>
             <div
               onClick={() => {
                 setModalClose(true);
@@ -255,7 +257,7 @@ export default function Page() {
                   setModal(false);
                 }, 100);
               }}
-              className={`fixed inset-0 flex justify-center items-center 0 z-[1001] transition-transform ${
+              className={`fixed inset-0 flex justify-center items-center 0 z-1001 transition-transform ${
                 modalClose ? "scale-0" : "scale-100"
               }`}
             >

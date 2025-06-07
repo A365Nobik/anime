@@ -25,10 +25,36 @@
 @theme {
   --right-slide: slide-right 1s;
   --left-slide: slide-left 1s;
+  --breakpoint-2xl: 96rem;
 }
-
 
 ::-webkit-scrollbar {
   width: 0px;
 }
 
+@media (width < 1600px) {
+  .header-input {
+    width: 600px;
+  }
+}
+@media (width < 1400px) {
+  .header-input {
+    width: 400px;
+  }
+}
+
+@media (width < 1200px) {
+  .header-input {
+    width: 350px;
+  }
+}
+@media (width < 950px) {
+  .header-input {
+    width: 300px;
+  }
+}
+@media (width < 786px) {
+  .header-input {
+    width: 250px;
+  }
+}

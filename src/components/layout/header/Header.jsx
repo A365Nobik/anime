@@ -34,11 +34,11 @@ export default function Header({ page }) {
       <header
         onMouseEnter={() => setHeaderBg(true)}
         onMouseLeave={() => setHeaderBg(false)}
-        className={` sticky flex  justify-between items-center w-full p-4 text-[#EAEFEF] z-1000 transition-colors duration-500  delay-100 ${
+        className={` sticky flex  justify-between items-center w-full p-4 text-[#EAEFEF] z-1000 transition-colors duration-500  delay-100 max-md:p-2 max-sm:justify-center ${
           headerBg ? " bg-gray-800" : ""
         } `}
       >
-        <h1 className="text-4xl font-medium text-center">{pageH1}</h1>
+        <h1 className="text-4xl font-medium text-center max-xl:text-2xl max-lg:text-xl max-md:w-35 max-sm:hidden">{pageH1}</h1>
         {page !== "home" ? (
           <>
             <a className="text-4xl font-medium" href="/">
@@ -49,7 +49,7 @@ export default function Header({ page }) {
           ""
         )}
         <div className="flex justify-center items-center">
-          <h1 className="mr-10 text-3xl font-medium">Search An Anime</h1>
+          <h1 className="mr-10 text-3xl font-medium max-xl:text-2xl max-lg:text-xl max-lg:mr-2.5 ">Search An Anime</h1>
           <div
             onFocus={() => setFocus(true)}
             onBlur={() => setFocus(false)}
@@ -66,11 +66,11 @@ export default function Header({ page }) {
               ref={inputRef}
               type="text"
               placeholder="Anime Name"
-              className="outline-0 w-200 bg-[#EAEFEF] p-0.5 placeholder:text-[#333446] text-[#333446] placeholder:font-medium font-medium focus:border-purple-500  rounded-sm"
+              className="outline-0  bg-[#EAEFEF] p-0.5 placeholder:text-[#333446] text-[#333446] placeholder:font-medium font-medium focus:border-purple-500  rounded-sm header-input 2xl:w-200 max-lg:text-2xl max-lg:p-0 max-md:text-xl max-md:w-50 "
             />
             <button
               onClick={findAnimeName}
-              className="hover:scale-110 active:scale-90 transition-transform cursor-pointer"
+              className="hover:scale-110 active:scale-90 transition-transform cursor-pointer max-md: text-2xl"
             >
               <FaSearch className="text-white" />
             </button>

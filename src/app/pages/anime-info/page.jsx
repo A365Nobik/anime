@@ -478,7 +478,7 @@ export default function Info() {
                               key={element.id}
                               className="h-[325px] border-2 border-white flex flex-col justify-center items-center p-1  rounded-lg"
                             >
-                              {element?.attributes?.image?.original ? (
+                              {element?.attributes?.image?.original.length>0   ? (
                                 <img
                                   className="object-cover rounded-md w-[220px] h-[250px]"
                                   loading="lazy"
@@ -488,7 +488,7 @@ export default function Info() {
                               ) : (
                                 <img
                                   className="object-cover [220px] h-[250px]"
-                                  src="https://cdn-icons-png.flaticon.com/512/456/456212.png"
+                                  src="https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png"
                                   alt={`Undefined Character:${element?.attributes?.canonicalName} id:${element?.id}`}
                                 />
                               )}

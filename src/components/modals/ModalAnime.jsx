@@ -12,16 +12,17 @@ export default function ModalAnime({  anime }) {
     <>
       {anime ? (
         <div
-          className={`w-180 h-160 flex justify-center items-center flex-col  backdrop-blur-2xl rounded-2xl z-1002 text-white  font-medium border-2 `}
+          className={`w-180 h-160 flex justify-center items-center flex-col  backdrop-blur-2xl rounded-2xl z-1003 text-white  font-medium border-2 max-lg:w-150 max-lg:h-120`}
         >
 
-          <span className="flex justify-center items-center mt-5 text-center">
+          <span className="flex justify-center items-center mt-5 text-center max-lg:mt-2">
             <h1
               className={`${
                 anime.attributes.canonicalTitle.length <= 20
                   ? "text-4xl"
                   : "text-[18px]"
-              }`}
+                  
+              } max-lg:text-[16px]`}
             >
               {anime.attributes.canonicalTitle}
             </h1>
@@ -29,7 +30,7 @@ export default function ModalAnime({  anime }) {
           <div className="flex justify-start m-2 items-start gap-5">
             {anime.attributes.posterImage.medium ? (
               <img
-                className="rounded-lg"
+                className="rounded-lg max-lg:w-60 "
                 src={anime.attributes.posterImage.medium}
                 alt=""
               />
@@ -64,9 +65,9 @@ export default function ModalAnime({  anime }) {
                   <h1>{anime.attributes.episodeLength}m</h1>
                 </span>
               </div>
-              <span className="overflow-y-auto h-100  ">
+              <span className="overflow-y-auto h-100 max-lg:h-50 ">
                 <h1
-                  className={`w-60 ${
+                  className={`w-60 max-lg:text-lg ${
                     anime.attributes.description.length > 200
                       ? "text-lg"
                       : "text-2xl"
@@ -76,7 +77,7 @@ export default function ModalAnime({  anime }) {
                 </h1>
               </span>
               {anime.attributes.youtubeVideoId ? (
-                <button className="flex justify-center items-center bg-orange-500 p-2 gap-1 rounded-2xl  text-lg font-medium transition-transform hover:scale-110 active:scale-90 mt-5">
+                <button className="flex justify-center items-center bg-orange-500 p-2 gap-1 rounded-2xl  text-lg font-medium transition-transform hover:scale-110 active:scale-90 mt-5 max-lg:p-1">
                   <FaVideo />
                   <a
                     target="blanc"
@@ -90,7 +91,7 @@ export default function ModalAnime({  anime }) {
                   Can't Find A Trailer :(
                 </h1>
               )}
-              <button className="flex justify-center items-center bg-orange-500 p-2 gap-1 rounded-2xl  text-lg font-medium transition-transform hover:scale-110 active:scale-90 mt-5">
+              <button className="flex justify-center items-center bg-orange-500 p-2 gap-1 rounded-2xl  text-lg font-medium transition-transform hover:scale-110 active:scale-90 mt-5 max-lf:mt-2 max-lg:p-1">
                 <FaInfoCircle />
                 <a href={`/info?q=${anime.attributes.canonicalTitle}`}>
                   View Anime Info
