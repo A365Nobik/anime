@@ -247,19 +247,21 @@ export default function Page() {
           </ul>
         </div>
         {modal ? (
-          <span
-            onClick={() => {
-              setModalClose(true);
-              setTimeout(() => {
-                setModal(false);
-              }, 100);
-            }}
-            className={`fixed inset-0 flex justify-center items-center bg-black/80 z-[1001] transition-transform ${
-              modalClose ? "scale-0" : "scale-100"
-            }`}
-          >
-            <ModalAnime anime={selectedAnime} />
-          </span>
+          <div className="bg-black/60 inset-0 fixed">
+            <span
+              onClick={() => {
+                setModalClose(true);
+                setTimeout(() => {
+                  setModal(false);
+                }, 100);
+              }}
+              className={`fixed inset-0 flex justify-center items-center 0 z-[1001] transition-transform ${
+                modalClose ? "scale-0" : "scale-100"
+              }`}
+            >
+              <ModalAnime anime={selectedAnime} />
+            </span>
+          </div>
         ) : (
           ""
         )}

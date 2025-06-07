@@ -12,7 +12,7 @@ export default function ModalAnime({  anime }) {
     <>
       {anime ? (
         <div
-          className={`w-180 h-160 flex justify-center items-center flex-col  backdrop-blur-2xl rounded-2xl z-1002 text-white  font-medium border-2`}
+          className={`w-180 h-160 flex justify-center items-center flex-col  backdrop-blur-2xl rounded-2xl z-1002 text-white  font-medium border-2 `}
         >
 
           <span className="flex justify-center items-center mt-5 text-center">
