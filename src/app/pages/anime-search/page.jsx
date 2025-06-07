@@ -40,7 +40,7 @@ export default function Page() {
     <>
       <Header page={"search"} />
       <main>
-        <ul className="grid grid-cols-10 gap-2  justify-center items-center mt-35">
+        <ul className="grid grid-cols-10 gap-2 ml-5 justify-center items-center mt-35 result-list max-3xl:grid-cols-6 max-xl:grid-cols-5 max-lg:grid-cols-3 max-md:grid-cols-2">
           {searchData && searchData.length > 0
             ? searchData.map((element) => {
                 return (
@@ -51,7 +51,7 @@ export default function Page() {
                     >
                       <span className="flex flex-col items-start justify-center">
                         <img
-                          className="w-50 h-65 rounded-lg"
+                          className="w-50 h-65 rounded-lg max-lg:w-40 max-lg:h-55"
                           src={element.attributes.posterImage.original}
                           alt="posterImage"
                         />

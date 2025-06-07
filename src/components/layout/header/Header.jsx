@@ -38,10 +38,10 @@ export default function Header({ page }) {
           headerBg ? " bg-gray-800" : ""
         } `}
       >
-        <h1 className="text-4xl font-medium text-center max-xl:text-2xl max-lg:text-xl max-md:w-35 max-sm:hidden">{pageH1}</h1>
+        <h1 className="text-4xl font-medium text-center max-xl:text-2xl max-lg:text-xl max-md:w-35 max-sm:hidden max-md:hidden">{pageH1}</h1>
         {page !== "home" ? (
           <>
-            <a className="text-4xl font-medium" href="/">
+            <a className="text-4xl font-medium max-xl:text-2xl max-lg:text-xl max-lg:mr-2.5" href="/">
               Home
             </a>
           </>
@@ -49,7 +49,7 @@ export default function Header({ page }) {
           ""
         )}
         <div className="flex justify-center items-center">
-          <h1 className="mr-10 text-3xl font-medium max-xl:text-2xl max-lg:text-xl max-lg:mr-2.5 ">Search An Anime</h1>
+          <h1 className="mr-10 text-3xl font-medium max-xl:text-2xl max-lg:text-xl max-lg:mr-2.5 max-s:mr-0 max-s:text-center max-m:hidden">Search An Anime</h1>
           <div
             onFocus={() => setFocus(true)}
             onBlur={() => setFocus(false)}
