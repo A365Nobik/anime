@@ -25,6 +25,7 @@
 @theme {
   --right-slide: slide-right 1s;
   --left-slide: slide-left 1s;
+  --breakpoint-4xl: 112rem;
   --breakpoint-3xl: 105rem;
   --breakpoint-2xl: 96rem;
   --breakpoint-s: 32rem;

@@ -24,10 +24,10 @@ export default function ModalAnime({ anime }) {
             {anime.attributes.canonicalTitle}
           </h1>
           <div className="flex justify-start m-2 items-start gap-5 max-s:m-1 max-s:gap-1 max-m:w-full">
-            {anime.attributes.posterImage.medium ? (
+            {anime?.attributes?.posterImage?.medium ? (
               <img
                 className="rounded-lg max-lg:w-60 max-sm:w-50 "
-                src={anime.attributes.posterImage.medium}
+                src={anime?.attributes?.posterImage?.medium}
                 alt=""
               />
             ) : (

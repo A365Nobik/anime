@@ -16,6 +16,10 @@ export default function Info() {
   const [modalClose, setModalClose] = useState(false);
   const [modalTrailer, setModalTrailer] = useState(false);
   const [steamLinks, setStreamLinks] = useState([]);
+  const [detailsCard, setDetailsCard] = useState(true);
+  const [episodesCard, setEpisodesCard] = useState(false);
+  const [charactersContainer, setCharactersContainer] = useState(false);
+  const [streamError, setStreamError] = useState(false);
   let [episodes, setEpisodes] = useState([]);
   let [offsetEpisodes, setOffsetEpisodes] = useState(0);
   let [offsetCharacters, setOffsetCharacters] = useState(0);
@@ -187,24 +191,56 @@ export default function Info() {
       {anime ? (
         <>
           <main>
-            <div className="flex justify-center items-center relative bottom-20 text-white ">
+            <div className="flex flex-col justify-center items-center relative bottom-20 text-white ">
               <span className="border-t-0 border-2 rounded-br-lg rounded-bl-lg p-1 ">
                 <h1 className="text-4xl    font-bold">
                   {anime?.attributes?.canonicalTitle}
                 </h1>
               </span>
+              <div className="flex justify-center items-center gap-1">
+                <h1
+                  onClick={() => {
+                    setDetailsCard(true);
+                    setCharactersContainer(false);
+                    setEpisodesCard(false);
+                  }}
+                  className="font-medium text-xl transition-transform hover:scale-110 active:scale-80 cursor-pointer "
+                >
+                  Details
+                </h1>
+                <h1
+                  onClick={() => {
+                    setEpisodesCard(true);
+                    setCharactersContainer(false);
+                    setDetailsCard(false);
+                  }}
+                  className="font-medium text-xl transition-transform hover:scale-110 active:scale-80 cursor-pointer  "
+                >
+                  Episodes
+                </h1>
+                <h1
+                  onClick={() => {
+                    setCharactersContainer(true);
+                    setDetailsCard(false);
+                    setEpisodesCard(false);
+                  }}
+                  className="font-medium text-xl transition-transform hover:scale-110 active:scale-80 cursor-pointer "
+                >
+                  Characters
+                </h1>
+              </div>
             </div>
-            <div className="flex justify-start gap-2">
-              <div className="flex justify-start items-start ml-5 relative bottom-40">
-                <div className="flex flex-col justify-center items-center">
+            <div className="flex justify-center items-center gap-2">
+              <div className="flex justify-center items-center relative bottom-20">
+                <div className="flex flex-col justify-center items-center max-3xl:w-55">
                   <img
-                    className="rounded-md"
+                    className="rounded-md max-3xl:w-50"
                     src={anime.attributes.posterImage.small}
                     alt=""
                   />
                   {steamLinks && steamLinks.length > 0 ? (
-                    <div className="flex flex-col justify-center items-center">
-                      <hr className="  w-70 text-white mt-2" />
+                    <div className="flex flex-col justify-center items-center max-3xl:w-40">
+                      <hr className="  w-full text-white mt-2" />
                       <h1 className="text-white font-medium text-lg">
                         Watch Online
                       </h1>
@@ -216,16 +252,20 @@ export default function Info() {
                                 <li key={element.id}>
                                   <div className="bg-white rounded-md  transition-transform hover:scale-110 active:scale-90">
                                     <button className="flex justify-center items-center p-1">
-                                      <a
-                                        href={element.attributes.url}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                      >
-                                        <img
-                                          className="w-8 h-8"
-                                          src={iconName(element.attributes.url)}
-                                        />
-                                      </a>
+                                      <button>
+                                        <a
+                                          href={element.attributes.url}
+                                          target="_blank"
+                                          rel="noopener noreferrer"
+                                        >
+                                          <img
+                                            className="w-8 h-8"
+                                            src={iconName(
+                                              element.attributes.url
+                                            )}
+                                          />
+                                        </a>
+                                      </button>
                                     </button>
                                   </div>
                                 </li>
@@ -244,285 +284,308 @@ export default function Info() {
                   )}
                 </div>
               </div>
-              <div className="w-[500px]  border-2 border-orange-500 rounded-lg relative bottom-15">
-                <div className="flex flex-col justify-center items-center ">
-                  <h1 className="text-2xl text-white font-medium">Details</h1>
-                  <hr className="w-full text-orange-500" />
-                </div>
-                <ul className="flex flex-col gap-4 justify-start items-start">
-                  <li className="flex  items-center text-white font-medium text-lg ml-2 gap-4 text-left">
-                    <h1 className="w-48">English Title</h1>
-                    <h1 className="flex-1">{anime.attributes.titles.en}</h1>
-                  </li>
-                  <li className="flex  items-center text-white font-medium text-lg ml-2 gap-4 text-left">
-                    <h1 className="w-48">Japan Title</h1>
-                    <h1 className="flex-1">{anime.attributes.titles.ja_jp}</h1>
-                  </li>
-                  <li className="flex  items-center text-white font-medium text-lg ml-2 gap-4 text-left">
-                    <h1 className="w-48">Japan Title (Romaji)</h1>
-                    <h1 className="flex-1">{anime.attributes.titles.en_jp}</h1>
-                  </li>
-                  <li className="flex  items-center text-white font-medium text-lg ml-2 gap-4 text-left">
-                    <h1 className="w-48">Show Type</h1>
-                    <h1 className="flex-1">{anime.attributes.showType}</h1>
-                  </li>
-                  <li className="flex  items-center text-white font-medium text-lg ml-2 gap-4 text-left">
-                    {anime.attributes.startDate ? (
-                      <>
-                        <h1 className="w-48">Came Out At</h1>
-                        <h1 className="flex-1">{anime.attributes.startDate}</h1>
-                      </>
-                    ) : (
-                      <>
-                        <h1 className="w-48">Came Out At</h1>
-                        <h1 className="flex-1">Undefined</h1>
-                      </>
-                    )}
-                  </li>
-                  <li className="flex  items-center text-white font-medium text-lg ml-2 gap-4 text-left">
-                    {anime.attributes.averageRating ? (
-                      <>
-                        <h1 className="w-48">Average Rating</h1>
-                        <h1 className="flex-1">
-                          {Math.round(anime.attributes.averageRating)}
-                        </h1>
-                      </>
-                    ) : (
-                      <>
-                        <h1 className="w-48">Average Rating</h1>
-                        <h1 className="flex-1">Undefined</h1>
-                      </>
-                    )}
-                  </li>
-                  <li className="flex  items-center text-white font-medium text-lg ml-2 gap-4 text-left">
-                    {anime.attributes.ageRatingGuide ? (
-                      <>
-                        <h1 className="w-48">Age Rating Guide</h1>
-                        <h1 className="flex-1">
-                          {anime.attributes.ageRatingGuide}
-                        </h1>
-                      </>
-                    ) : (
-                      <>
-                        <h1 className="w-48">Age Rating Guide</h1>
-                        <h1 className="flex-1">Undefined</h1>
-                      </>
-                    )}
-                  </li>
-                  <li className="flex  items-center text-white font-medium text-lg ml-2 gap-4 text-left">
-                    {anime.attributes.episodeCount ? (
-                      <>
-                        <h1 className="w-48">Episode Count</h1>
-                        <h1 className="flex-1">
-                          {anime.attributes.episodeCount}
-                        </h1>
-                      </>
-                    ) : (
-                      <>
-                        <h1 className="w-48">Episode Count</h1>
-                        <h1 className="flex-1">Undefined</h1>
-                      </>
-                    )}
-                  </li>
-                  <li className="flex  items-center text-white font-medium text-lg ml-2 gap-4 text-left">
-                    {anime.attributes.episodeLength ? (
-                      <>
-                        <h1 className="w-48">Episode Length</h1>
-                        <h1 className="flex-1">
-                          {anime.attributes.episodeLength} m
-                        </h1>
-                      </>
-                    ) : (
-                      <>
-                        <h1 className="w-48">Episode Length</h1>
-                        <h1>Undefined</h1>
-                      </>
-                    )}
-                  </li>
-                  <li className="flex  items-center text-white font-medium text-lg ml-2 gap-4 text-left">
-                    <h1 className="w-48">Status</h1>
-                    <h1 className="flex-1">
-                      {anime.attributes.status[0].toUpperCase()}
-                      {anime.attributes.status.slice(1, 10)}
-                    </h1>
-                  </li>
-                </ul>
-                <div className="flex justify-center items-center gap-4 mt-5">
-                  {anime.attributes.youtubeVideoId ? (
-                    <button
-                      onClick={() => {
-                        setModalTrailer(true);
-                        setTimeout(() => {
-                          setModalClose(false);
-                        }, 1);
-                      }}
-                      className="flex justify-center items-center bg-orange-500 p-1 gap-1 rounded-2xl  text-lg font-medium transition-transform hover:scale-110 active:scale-90 text-white"
-                    >
-                      <FaVideo />
-                      Watch Trailer
-                    </button>
-                  ) : (
-                    ""
-                  )}
-                  <button
-                    className="flex justify-center items-center bg-orange-500 p-1 gap-1 rounded-2xl  text-lg font-medium transition-transform hover:scale-110 active:scale-90 text-white"
-                    onClick={() => {
-                      setModalDescription(true);
-                      setTimeout(() => {
-                        setModalClose(false);
-                      }, 1);
-                    }}
-                  >
-                    <MdOutlineDescription />
-                    Read Description
-                  </button>
-                </div>
-              </div>
-              <div className="w-[500px]  border-2 border-orange-500 rounded-lg relative bottom-15 ">
-                <div className="flex flex-col justify-center items-center ">
-                  <h1 className="text-2xl text-white font-medium">Episodes</h1>
-                  <hr className="w-full text-orange-500" />
-                </div>
-                <div className="grid grid-5 justify-center items-center  overflow-y-auto h-[600px] gap-2 p-1 ">
-                  {anime && episodes ? (
-                    episodes.map((element) => {
-                      return (
-                        <div
-                          key={element.id}
-                          className="border-2 rounded-md border-white flex flex-col justify-center items-center p-1"
-                        >
-                          {element?.attributes?.thumbnail ? (
-                            <>
-                              <h1 className="text-white font-medium text-lg">
-                                Episode №{element.attributes.number}
-                              </h1>
-                              <img
-                                className=" object-cover rounded-md w-[450px] h-[250px]"
-                                loading="lazy"
-                                src={element?.attributes?.thumbnail?.original}
-                                alt={`Episode ${element.attributes.number} With Poster`}
-                              />
-                              <h1 className="text-white font-medium text-lg text-center">
-                                {element.attributes.canonicalTitle}
-                              </h1>
-                            </>
-                          ) : (
-                            <>
-                              <h1 className="text-white font-medium text-lg">
-                                Episode №{element.attributes.number}
-                              </h1>
-                              <img
-                                loading="lazy"
-                                className=" object-cover w-[450px] h-[250px] rounded-md "
-                                src={anime.attributes.posterImage.original}
-                                alt={`Episode №${element.attributes.number} Without Poster`}
-                              />
-                              <h1 className="text-white font-medium text-lg text-center">
-                                {element.attributes.canonicalTitle}
-                              </h1>
-                            </>
-                          )}
-                        </div>
-                      );
-                    })
-                  ) : (
-                    <span className="flex justify-center items-center text-3xl text-white font-bold mt-10 gap-2">
-                      <AiOutlineLoading3Quarters className="animate-spin" />
-                    </span>
-                  )}
-                  <span className="flex justify-center items-center">
-                    {moreEpisodesLoaded === false && episodes.length === 20 ? (
+              {detailsCard ? (
+                <div className="w-[500px]  border-2 border-orange-500 rounded-lg relative bottom-15">
+                  <div className="flex flex-col justify-center items-center ">
+                    <h1 className="text-2xl text-white font-medium">Details</h1>
+                    <hr className="w-full text-orange-500" />
+                  </div>
+                  <ul className="flex flex-col gap-4 justify-start items-start">
+                    <li className="flex  items-center text-white font-medium text-lg ml-2 gap-4 text-left">
+                      <h1 className="w-48">English Title</h1>
+                      <h1 className="flex-1">{anime.attributes.titles.en}</h1>
+                    </li>
+                    <li className="flex  items-center text-white font-medium text-lg ml-2 gap-4 text-left">
+                      <h1 className="w-48">Japan Title</h1>
+                      <h1 className="flex-1">
+                        {anime.attributes.titles.ja_jp}
+                      </h1>
+                    </li>
+                    <li className="flex  items-center text-white font-medium text-lg ml-2 gap-4 text-left">
+                      <h1 className="w-48">Japan Title (Romaji)</h1>
+                      <h1 className="flex-1">
+                        {anime.attributes.titles.en_jp}
+                      </h1>
+                    </li>
+                    <li className="flex  items-center text-white font-medium text-lg ml-2 gap-4 text-left">
+                      <h1 className="w-48">Show Type</h1>
+                      <h1 className="flex-1">{anime.attributes.showType}</h1>
+                    </li>
+                    <li className="flex  items-center text-white font-medium text-lg ml-2 gap-4 text-left">
+                      {anime.attributes.startDate ? (
+                        <>
+                          <h1 className="w-48">Came Out At</h1>
+                          <h1 className="flex-1">
+                            {anime.attributes.startDate}
+                          </h1>
+                        </>
+                      ) : (
+                        <>
+                          <h1 className="w-48">Came Out At</h1>
+                          <h1 className="flex-1">Undefined</h1>
+                        </>
+                      )}
+                    </li>
+                    <li className="flex  items-center text-white font-medium text-lg ml-2 gap-4 text-left">
+                      {anime.attributes.averageRating ? (
+                        <>
+                          <h1 className="w-48">Average Rating</h1>
+                          <h1 className="flex-1">
+                            {Math.round(anime.attributes.averageRating)}
+                          </h1>
+                        </>
+                      ) : (
+                        <>
+                          <h1 className="w-48">Average Rating</h1>
+                          <h1 className="flex-1">Undefined</h1>
+                        </>
+                      )}
+                    </li>
+                    <li className="flex  items-center text-white font-medium text-lg ml-2 gap-4 text-left">
+                      {anime.attributes.ageRatingGuide ? (
+                        <>
+                          <h1 className="w-48">Age Rating Guide</h1>
+                          <h1 className="flex-1">
+                            {anime.attributes.ageRatingGuide}
+                          </h1>
+                        </>
+                      ) : (
+                        <>
+                          <h1 className="w-48">Age Rating Guide</h1>
+                          <h1 className="flex-1">Undefined</h1>
+                        </>
+                      )}
+                    </li>
+                    <li className="flex  items-center text-white font-medium text-lg ml-2 gap-4 text-left">
+                      {anime.attributes.episodeCount ? (
+                        <>
+                          <h1 className="w-48">Episode Count</h1>
+                          <h1 className="flex-1">
+                            {anime.attributes.episodeCount}
+                          </h1>
+                        </>
+                      ) : (
+                        <>
+                          <h1 className="w-48">Episode Count</h1>
+                          <h1 className="flex-1">Undefined</h1>
+                        </>
+                      )}
+                    </li>
+                    <li className="flex  items-center text-white font-medium text-lg ml-2 gap-4 text-left">
+                      {anime.attributes.episodeLength ? (
+                        <>
+                          <h1 className="w-48">Episode Length</h1>
+                          <h1 className="flex-1">
+                            {anime.attributes.episodeLength} m
+                          </h1>
+                        </>
+                      ) : (
+                        <>
+                          <h1 className="w-48">Episode Length</h1>
+                          <h1>Undefined</h1>
+                        </>
+                      )}
+                    </li>
+                    <li className="flex  items-center text-white font-medium text-lg ml-2 gap-4 text-left">
+                      <h1 className="w-48">Status</h1>
+                      <h1 className="flex-1">
+                        {anime.attributes.status[0].toUpperCase()}
+                        {anime.attributes.status.slice(1, 10)}
+                      </h1>
+                    </li>
+                  </ul>
+                  <div className="flex max-3xl:flex-col justify-center items-center gap-4 mt-5 max-3xl:gap-2">
+                    {anime.attributes.youtubeVideoId ? (
                       <button
                         onClick={() => {
-                          setOffsetEpisodes((prev) => prev + 20);
-                          console.log(offsetEpisodes);
+                          setModalTrailer(true);
+                          setTimeout(() => {
+                            setModalClose(false);
+                          }, 1);
                         }}
-                        className=" bg-orange-500 w-2/4 p-1 rounded-2xl   font-medium transition-transform hover:scale-110 active:scale-90 text-white cursor-pointer"
+                        className="flex justify-center items-center bg-orange-500 p-1 gap-1 rounded-2xl  text-lg font-medium transition-transform hover:scale-110 active:scale-90 text-white"
                       >
-                        Load More Episodes
+                        <FaVideo />
+                        Watch Trailer
                       </button>
                     ) : (
                       ""
                     )}
-                  </span>
+                    <button
+                      className="flex justify-center items-center bg-orange-500 p-1 gap-1 rounded-2xl  text-lg font-medium transition-transform hover:scale-110 active:scale-90 text-white max-3xl:mb-1"
+                      onClick={() => {
+                        setModalDescription(true);
+                        setTimeout(() => {
+                          setModalClose(false);
+                        }, 1);
+                      }}
+                    >
+                      <MdOutlineDescription />
+                      Read Description
+                    </button>
+                  </div>
                 </div>
-              </div>
-              <div className="w-[1000px]  border-2 border-orange-500 rounded-lg relative bottom-15 ">
-                <div className="flex flex-col justify-center items-center">
-                  <h1 className="text-2xl text-white font-medium">
-                    Characters
-                  </h1>
-                  <hr className="w-full text-orange-500" />
-                </div>
-                <div>
-                  <div
-                    className={`grid ${
-                      charactersCard.length === 0 ? "" : "grid-cols-5"
-                    } justify-center items-center  overflow-y-auto  h-[600px] gap-2 p-1`}
-                  >
-                    {characters.length === 0 || charactersCard.length === 0 ? (
-                      <div className="flex justify-center items-center text-2xl text-white font-bold  gap-2 h-max">
-                        <h1 className="text-center">
-                          Loading Anime Data Or Characters For This Anime Are
-                          Missing
-                        </h1>
-                        <AiOutlineLoading3Quarters className="animate-spin" />
-                      </div>
-                    ) : (
-                      ""
-                    )}
-                    {anime && characters && characters.length > 0
-                      ? charactersCard.map((element) => {
-                          return (
-                            <div
-                              key={element.id}
-                              className="h-[325px] border-2 border-white flex flex-col justify-center items-center p-1  rounded-lg"
-                            >
-                              {element?.attributes?.image?.original.length>0   ? (
+              ) : (
+                ""
+              )}
+              {episodesCard ? (
+                <div className="w-[500px]  border-2 border-orange-500 rounded-lg relative bottom-15 ">
+                  <div className="flex flex-col justify-center items-center ">
+                    <h1 className="text-2xl text-white font-medium">
+                      Episodes
+                    </h1>
+                    <hr className="w-full text-orange-500" />
+                  </div>
+                  <div className="grid grid-5 justify-center items-center  overflow-y-auto h-[600px] gap-2 p-1 ">
+                    {anime && episodes ? (
+                      episodes.map((element) => {
+                        return (
+                          <div
+                            key={element.id}
+                            className="border-2 rounded-md border-white flex flex-col justify-center items-center p-1"
+                          >
+                            {element?.attributes?.thumbnail ? (
+                              <>
+                                <h1 className="text-white font-medium text-lg">
+                                  Episode №{element.attributes.number}
+                                </h1>
                                 <img
-                                  className="object-cover rounded-md w-[220px] h-[250px]"
+                                  className=" object-cover rounded-md w-[450px] h-[250px]"
                                   loading="lazy"
-                                  src={element?.attributes?.image?.original}
-                                  alt={`Character:${element?.attributes?.canonicalName} Id:${element?.id}`}
+                                  src={element?.attributes?.thumbnail?.original}
+                                  alt={`Episode ${element.attributes.number} With Poster`}
                                 />
-                              ) : (
+                                <h1 className="text-white font-medium text-lg text-center max-2xl:text-center">
+                                  {element.attributes.canonicalTitle}
+                                </h1>
+                              </>
+                            ) : (
+                              <>
+                                <h1 className="text-white font-medium text-lg">
+                                  Episode №{element.attributes.number}
+                                </h1>
                                 <img
-                                  className="object-cover [220px] h-[250px]"
-                                  src="https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png"
-                                  alt={`Undefined Character:${element?.attributes?.canonicalName} id:${element?.id}`}
+                                  loading="lazy"
+                                  className=" object-cover w-[450px] h-[250px] rounded-md "
+                                  src={anime.attributes.posterImage.original}
+                                  alt={`Episode №${element.attributes.number} Without Poster`}
                                 />
-                              )}
-                              <h1 className="text-white font-medium text-lg text-center">
-                                {element?.attributes?.canonicalName}
-                              </h1>
-                            </div>
-                          );
-                        })
-                      : ""}
-                  </div>
-                  <hr className="w-full text-orange-500 my-1" />
-                  <div className="flex justify-center items-center gap-2">
-                    <button
-                      disabled={offsetCharacters === 0}
-                      onClick={() => {
-                        setOffsetCharacters((prev) => prev - 20);
-                      }}
-                      className="p-1 bg-black border-solid border-2 border-amber-600 hover:scale-105 active:scale-95 transition-all rounded-2xl cursor-pointer"
-                    >
-                      <FaArrowLeft className="text-amber-600 " />
-                    </button>
-                    <button
-                      disabled={moreCharactersLoaded}
-                      onClick={() => {
-                        setOffsetCharacters((prev) => prev + 20);
-                      }}
-                      className="p-1 bg-black border-solid border-2 border-amber-600 hover:scale-105 active:scale-95 transition-all rounded-2xl cursor-pointer"
-                    >
-                      <FaArrowRight className="text-amber-600 " />
-                    </button>
+                                <h1 className="text-white font-medium text-lg text-center">
+                                  {element.attributes.canonicalTitle}
+                                </h1>
+                              </>
+                            )}
+                          </div>
+                        );
+                      })
+                    ) : (
+                      <span className="flex justify-center items-center text-3xl text-white font-bold mt-10 gap-2">
+                        <AiOutlineLoading3Quarters className="animate-spin" />
+                      </span>
+                    )}
+                    <span className="flex justify-center items-center">
+                      {moreEpisodesLoaded === false &&
+                      episodes.length === 20 ? (
+                        <button
+                          onClick={() => {
+                            setOffsetEpisodes((prev) => prev + 20);
+                            console.log(offsetEpisodes);
+                          }}
+                          className=" bg-orange-500 w-2/4 p-1 rounded-2xl   font-medium transition-transform hover:scale-110 active:scale-90 text-white cursor-pointer"
+                        >
+                          Load More Episodes
+                        </button>
+                      ) : (
+                        ""
+                      )}
+                    </span>
                   </div>
                 </div>
-              </div>
+              ) : (
+                ""
+              )}
+              {charactersContainer ? (
+                <div className="  border-2 border-orange-500 rounded-lg relative bottom-15 max-2xl:w[500px]">
+                  <div className="flex flex-col justify-center items-center">
+                    <h1 className="text-2xl text-white font-medium">
+                      Characters
+                    </h1>
+                    <hr className="w-full text-orange-500" />
+                  </div>
+                  <div>
+                    <div
+                      className={`grid ${
+                        charactersCard.length === 0 ? "" : "grid-cols-5"
+                      } justify-center items-center  overflow-y-auto  h-[600px] gap-2 p-1 max-4xl:grid-cols-4 max-2xl:grid-cols-3 max-xl:grid-cols-2 max-lg:grid-cols-1`}
+                    >
+                      {characters.length === 0 ||
+                      charactersCard.length === 0 ? (
+                        <div className="flex justify-center items-center text-2xl text-white font-bold  gap-2 h-max">
+                          <h1 className="text-center">
+                            Loading Anime Data Or Characters For This Anime Are
+                            Missing
+                          </h1>
+                          <AiOutlineLoading3Quarters className="animate-spin" />
+                        </div>
+                      ) : (
+                        ""
+                      )}
+                      {anime && characters && characters.length > 0
+                        ? charactersCard.map((element) => {
+                            return (
+                              <div
+                                key={element.id}
+                                className=" h-[325px]  border-2 border-white flex flex-col justify-center items-center p-1  rounded-lg max-lg:w-50 max"
+                              >
+                                {element?.attributes?.image?.original.length >
+                                0 ? (
+                                  <img
+                                    className="object-cover rounded-md w-[220px] h-[250px] max-xl:w-[180px] max-xl:h-[225px]"
+                                    loading="lazy"
+                                    src={element?.attributes?.image?.original}
+                                    alt={`Character:${element?.attributes?.canonicalName} Id:${element?.id}`}
+                                  />
+                                ) : (
+                                  <img
+                                    className="object-cover [220px] h-[250px]"
+                                    src="https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png"
+                                    alt={`Undefined Character:${element?.attributes?.canonicalName} id:${element?.id}`}
+                                  />
+                                )}
+                                <h1 className="text-white font-medium text-lg text-center">
+                                  {element?.attributes?.canonicalName}
+                                </h1>
+                              </div>
+                            );
+                          })
+                        : ""}
+                    </div>
+                    <hr className="w-full text-orange-500 my-1" />
+                    <div className="flex justify-center items-center gap-2">
+                      <button
+                        disabled={offsetCharacters === 0}
+                        onClick={() => {
+                          setOffsetCharacters((prev) => prev - 20);
+                        }}
+                        className="p-1 bg-black border-solid border-2 border-amber-600 hover:scale-105 active:scale-95 transition-all rounded-2xl cursor-pointer"
+                      >
+                        <FaArrowLeft className="text-amber-600 " />
+                      </button>
+                      <button
+                        disabled={moreCharactersLoaded}
+                        onClick={() => {
+                          setOffsetCharacters((prev) => prev + 20);
+                        }}
+                        className="p-1 bg-black border-solid border-2 border-amber-600 hover:scale-105 active:scale-95 transition-all rounded-2xl cursor-pointer"
+                      >
+                        <FaArrowRight className="text-amber-600 " />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                ""
+              )}
             </div>
             {modalDescription ? (
               <span

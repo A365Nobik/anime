@@ -2,8 +2,9 @@ import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { useState, useEffect } from "react";
 import ModalAnime from "../../../components/modals/ModalAnime";
 import Header from "../../../components/layout/header/Header";
-
+import unkPoster from "../../../assets/unkPoster.png";
 import { useSearchParams } from "react-router-dom";
+
 export default function Page() {
   const [modal, setModal] = useState(false);
   const apiUrl = import.meta.env.VITE_API_URL;
@@ -33,9 +34,13 @@ export default function Page() {
     findAnime();
   }, [query]);
   useEffect(() => {
-    document.querySelector("body").classList.add("overflow-hidden");
+    if (modal) {
+      document.querySelector("body").classList.add("overflow-y-hidden");
+    } else {
+      document.querySelector("body").classList.remove("overflow-y-hidden");
+    }
     setModalClose(true);
-  }, []);
+  }, [modal]);
   return (
     <>
       <Header page={"search"} />
@@ -50,11 +55,19 @@ export default function Page() {
                       onClick={() => handleModalClick(element)}
                     >
                       <span className="flex flex-col items-start justify-center">
-                        <img
-                          className="w-50 h-65 rounded-lg max-lg:w-40 max-lg:h-55"
-                          src={element.attributes.posterImage.original}
-                          alt="posterImage"
-                        />
+                        {element?.attributes?.posterImage?.original ? (
+                          <img
+                            className="w-50 h-65 rounded-lg max-lg:w-40 max-lg:h-55"
+                            src={element?.attributes?.posterImage?.original}
+                            alt="posterImage"
+                          />
+                        ) : (
+                            <img
+                              className="w-50 h-65 rounded-lg max-lg:w-40 max-lg:h-55"
+                              src={unkPoster}
+                              alt="Unknown posterImage"
+                            />
+                        )}
                         <h1 className="text-lg text-center text-white font-medium whitespace-nowrap overflow-hidden text-ellipsis">
                           {element.attributes.canonicalTitle.length > 15
                             ? element.attributes.canonicalTitle.slice(0, 15) +

@@ -11,6 +11,8 @@ import {
 import { AiFillFastForward, AiOutlineLoading3Quarters } from "react-icons/ai";
 import ModalAnime from "../../../components/modals/ModalAnime";
 import Header from "../../../components/layout/header/Header";
+import unkPoster from "../../../assets/unkPoster.png";
+
 export default function Page() {
   const [animeList, setAnimeList] = useState([]);
   const [trendingList, setTrendingList] = useState([]);
@@ -162,9 +164,10 @@ export default function Page() {
                   </span>
                 </div>
                 <h1 className="w-100 font-medium max-sm:text-sm text-center max-sm:w-50">
-                    {window.screen.width<768?(
-                      currentAnime.attributes.description.slice(0, 100)
-                    ):currentAnime.attributes.description.slice(0, 200)}...
+                  {window.screen.width < 768
+                    ? currentAnime.attributes.description.slice(0, 100)
+                    : currentAnime.attributes.description.slice(0, 200)}
+                  ...
                 </h1>
                 <div className="flex justify-center items-center gap-3 mt-1 max-sm:flex-col">
                   <button className="flex justify-center items-center bg-orange-500 p-2 gap-1 rounded-2xl  text-lg font-medium transition-transform hover:scale-110 active:scale-90 max-xl:p-1 max-sm:w-40">
@@ -224,11 +227,19 @@ export default function Page() {
                       onClick={() => handleModalClick(element)}
                     >
                       <span className="flex flex-col items-start justify-center">
-                        <img
-                          className="w-50 h-65 rounded-lg max-lg:w-40 max-lg:h-55"
-                          src={element.attributes.posterImage.original}
-                          alt="posterImage"
-                        />
+                        {element?.attributes?.posterImage?.original ? (
+                          <img
+                            className="w-50 h-65 rounded-lg max-lg:w-40 max-lg:h-55"
+                            src={element?.attributes?.posterImage?.original}
+                            alt="posterImage"
+                          />
+                        ) : (
+                          <img
+                            className="w-50 h-65 rounded-lg max-lg:w-40 max-lg:h-55"
+                            src={unkPoster}
+                            alt="Unknown posterImage"
+                          />
+                        )}
                         <h1 className="text-lg text-center text-white font-medium whitespace-nowrap overflow-hidden text-ellipsis">
                           {element.attributes.canonicalTitle.length > 15
                             ? element.attributes.canonicalTitle.slice(0, 15) +
@@ -249,7 +260,11 @@ export default function Page() {
           </ul>
         </div>
         {modal ? (
-          <div className={`bg-black/60 inset-0 fixed duration-50 transition-opacity z-1003 ${modalClose?"opacity-0":"opacity-100"}`}>
+          <div
+            className={`bg-black/60 inset-0 fixed duration-50 transition-opacity z-1003 ${
+              modalClose ? "opacity-0" : "opacity-100"
+            }`}
+          >
             <div
               onClick={() => {
                 setModalClose(true);
