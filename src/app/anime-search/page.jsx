@@ -34,8 +34,8 @@ export default function Page() {
   }, [query]);
   useEffect(() => {
     document.querySelector("body").classList.add("overflow-hidden");
+    setModalClose(true);
   }, []);
-  console.log(searchData);
   return (
     <>
       <Header page={"search"} />
@@ -84,12 +84,17 @@ export default function Page() {
           ""
         )}
         {modal ? (
-          <span className={`flex justify-center items-center relative bottom-175 w-screen h-screen transition-transform ${modalClose ? "scale-0" : "scale-100"}`}>
-            <ModalAnime
-              setModal={setModal}
-              anime={selectedAnime}
-              setModalClose={setModalClose}
-            />
+          <span
+            onClick={() => {
+              setModalClose(true);
+              setTimeout(() => {
+                setModal(false);
+              }, 100);
+            }}
+            className={`flex justify-center items-center  transition-transform fixed inset-0 bg-black/50
+             ${modalClose ? "scale-0" : "scale-100"}`}
+          >
+            <ModalAnime anime={selectedAnime} />
           </span>
         ) : (
           ""

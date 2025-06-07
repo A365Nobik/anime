@@ -8,22 +8,14 @@ import {
 } from "react-icons/fa";
 import { AiFillFastForward, AiOutlineLoading3Quarters } from "react-icons/ai";
 
-export default function ModalAnime({ setModal, anime, setModalClose }) {
+export default function ModalAnime({  anime }) {
   return (
     <>
       {anime ? (
         <div
-          className={`w-180 h-160  backdrop-blur-2xl rounded-2xl z-1002 text-white  font-medium border-2`}
+          className={`w-180 h-160 flex justify-center items-center flex-col  backdrop-blur-2xl rounded-2xl z-1002 text-white  font-medium border-2`}
         >
-          <IoIosCloseCircle
-            className="mr=10 text-4xl float-end m-1 transition-transform hover:scale-110 active:scale-80 text-red-600 bg-black rounded-full cursor-pointer"
-            onClick={() => {
-              setModalClose(true);
-              setTimeout(() => {
-                setModal(false);
-              }, 100);
-            }}
-          />
+
           <span className="flex justify-center items-center mt-5 text-center">
             <h1
               className={`${

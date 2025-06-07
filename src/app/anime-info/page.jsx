@@ -6,14 +6,16 @@ import undefinedCharacter from "../../../public/undefined.png";
 import { FaArrowRight, FaArrowLeft, FaVideo } from "react-icons/fa";
 import { MdOutlineDescription } from "react-icons/md";
 import Description from "../../components/modals/Description";
+import Trailer from "../../components/modals/Trailer";
 export default function Info() {
   const [searchParams] = useSearchParams();
   const [anime, setAnime] = useState(null);
   const apiUrl = import.meta.env.VITE_API_URL;
   const [moreEpisodesLoaded, setMoreEpisodesLoaded] = useState(false);
   const [moreCharactersLoaded, setMoreCharactersLoaded] = useState(false);
-  const [modal, setModal] = useState(false);
+  const [modalDescription, setModalDescription] = useState(false);
   const [modalClose, setModalClose] = useState(false);
+  const [modalTrailer, setModalTrailer] = useState(false);
   const [steamLinks, setStreamLinks] = useState([]);
   let [episodes, setEpisodes] = useState([]);
   let [offsetEpisodes, setOffsetEpisodes] = useState(0);
@@ -35,15 +37,16 @@ export default function Info() {
         alert(error);
       }
     };
+    setModalClose(true);
     getAnimeInfo();
   }, [searchParams]);
   useEffect(() => {
-    if (modal) {
+    if (modalDescription) {
       document.querySelector("body").classList.add("overflow-y-hidden");
     } else {
       document.querySelector("body").classList.remove("overflow-y-hidden");
     }
-  }, [modal]);
+  }, [modalDescription]);
   useEffect(() => {
     if (anime) {
       const onlineLinks = async () => {
@@ -347,14 +350,22 @@ export default function Info() {
                   </li>
                 </ul>
                 <div className="flex justify-center items-center gap-4 mt-5">
-                  <button className="flex justify-center items-center bg-orange-500 p-1 gap-1 rounded-2xl  text-lg font-medium transition-transform hover:scale-110 active:scale-90 text-white">
+                  <button
+                    onClick={() => {
+                      setModalTrailer(true);
+                      setTimeout(() => {
+                        setModalClose(false);
+                      }, 1);
+                    }}
+                    className="flex justify-center items-center bg-orange-500 p-1 gap-1 rounded-2xl  text-lg font-medium transition-transform hover:scale-110 active:scale-90 text-white"
+                  >
                     <FaVideo />
                     Watch Trailer
                   </button>
                   <button
                     className="flex justify-center items-center bg-orange-500 p-1 gap-1 rounded-2xl  text-lg font-medium transition-transform hover:scale-110 active:scale-90 text-white"
                     onClick={() => {
-                      setModal(true);
+                      setModalDescription(true);
                       setTimeout(() => {
                         setModalClose(false);
                       }, 1);
@@ -384,7 +395,7 @@ export default function Info() {
                                 Episode №{element.attributes.number}
                               </h1>
                               <img
-                                className=" object-cover rounded-md w-[400px] h-[250px]"
+                                className=" object-cover rounded-md w-[450px] h-[250px]"
                                 loading="lazy"
                                 src={element?.attributes?.thumbnail?.original}
                                 alt={`Episode ${element.attributes.number} With Poster`}
@@ -400,7 +411,7 @@ export default function Info() {
                               </h1>
                               <img
                                 loading="lazy"
-                                className=" object-cover w-[400px] h-[250px] rounded-md "
+                                className=" object-cover w-[450px] h-[250px] rounded-md "
                                 src={anime.attributes.posterImage.original}
                                 alt={`Episode №${element.attributes.number} Without Poster`}
                               />
@@ -511,15 +522,42 @@ export default function Info() {
                 </div>
               </div>
             </div>
-            {modal ? (
+            {modalDescription ? (
               <span
-                className={`flex justify-center items-center  w-screen h-screen relative bottom-320 transition-transform ${
-                  modalClose ? "scale-0" : "scale-100 delay-100"
-                }`}
+                onClick={() => {
+                  setModalClose(true);
+                  setTimeout(() => {
+                    setModalDescription(false);
+                  }, 100);
+                }}
+                className={`flex justify-center items-center  transition-transform fixed inset-0
+                  bg-black/50
+            } w-screen h-screen ${modalClose ? "scale-0" : "scale-100"}`}
               >
                 <Description
                   description={anime.attributes.description}
-                  setModal={setModal}
+                  setModal={setModalDescription}
+                  setModalClose={setModalClose}
+                />
+              </span>
+            ) : (
+              ""
+            )}
+            {modalTrailer ? (
+              <span
+                onClick={() => {
+                  setModalClose(true);
+                  setTimeout(() => {
+                    setModalTrailer(false);
+                  }, 100);
+                }}
+                className={`flex justify-center items-center  transition-transform bg-black/50 z-20 inset-0 fixed ${
+                  modalClose ? "scale-0" : "scale-100"
+                }`}
+              >
+                <Trailer
+                  trailer={anime.attributes.youtubeVideoId}
+                  setModalTrailer={setModalTrailer}
                   setModalClose={setModalClose}
                 />
               </span>

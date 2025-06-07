@@ -34,6 +34,7 @@ export default function Page() {
       }
     };
     getBanner();
+    setModalClose(true);
   }, []);
 
   useEffect(() => {
@@ -247,15 +248,17 @@ export default function Page() {
         </div>
         {modal ? (
           <span
-            className={`flex justify-center items-center relative transition-transform ${
-              window.scrollY >= 252 ? "bottom-250" : "bottom-300 "
-            } w-screen h-screen ${modalClose ? "scale-0" : "scale-100"}`}
+            onClick={() => {
+              setModalClose(true);
+              setTimeout(() => {
+                setModal(false);
+              }, 100);
+            }}
+            className={`fixed inset-0 flex justify-center items-center bg-black/80 z-[1001] transition-transform ${
+              modalClose ? "scale-0" : "scale-100"
+            }`}
           >
-            <ModalAnime
-              setModal={setModal}
-              anime={selectedAnime}
-              setModalClose={setModalClose}
-            />
+            <ModalAnime anime={selectedAnime} />
           </span>
         ) : (
           ""
