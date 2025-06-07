@@ -26,10 +26,12 @@
   --right-slide: slide-right 1s;
   --left-slide: slide-left 1s;
   --breakpoint-2xl: 96rem;
+  --breakpoint-s: 32rem;
+  --breakpoint-m: 29rem;
 }
 
 ::-webkit-scrollbar {
-  width: 0px;
+  width: 0px; 
 }
 
 @media (width < 1600px) {
@@ -57,4 +59,7 @@
   .header-input {
     width: 250px;
   }
+}
+@media (width < 500px) {
+  
 }

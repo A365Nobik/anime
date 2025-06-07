@@ -7,30 +7,26 @@ import {
 } from "react-icons/fa";
 import { AiFillFastForward, AiOutlineLoading3Quarters } from "react-icons/ai";
 
-export default function ModalAnime({  anime }) {
+export default function ModalAnime({ anime }) {
   return (
     <>
       {anime ? (
         <div
-          className={`w-180 h-160 flex justify-center items-center flex-col  backdrop-blur-2xl rounded-2xl z-1003 text-white  font-medium border-2 max-lg:w-150 max-lg:h-120`}
+          className={`w-180 h-160 flex  items-center flex-col  backdrop-blur-2xl rounded-2xl z-1003 text-white  font-medium border-2 max-lg:w-150 min-sm:justify-center max-lg:h-120 max-sm:w-125 max-sm:h-100 max-s:w-115 max-m:w-100`}
         >
-
-          <span className="flex justify-center items-center mt-5 text-center max-lg:mt-2">
-            <h1
-              className={`${
-                anime.attributes.canonicalTitle.length <= 20
-                  ? "text-4xl"
-                  : "text-[18px]"
-                  
-              } max-lg:text-[16px]`}
-            >
-              {anime.attributes.canonicalTitle}
-            </h1>
-          </span>
-          <div className="flex justify-start m-2 items-start gap-5">
+          <h1
+            className={`${
+              anime.attributes.canonicalTitle.length <= 20
+                ? "text-4xl"
+                : "text-[18px]"
+            } max-lg:text-2xl`}
+          >
+            {anime.attributes.canonicalTitle}
+          </h1>
+          <div className="flex justify-start m-2 items-start gap-5 max-s:m-1 max-s:gap-1 max-m:w-full">
             {anime.attributes.posterImage.medium ? (
               <img
-                className="rounded-lg max-lg:w-60 "
+                className="rounded-lg max-lg:w-60 max-sm:w-50 "
                 src={anime.attributes.posterImage.medium}
                 alt=""
               />
@@ -39,8 +35,8 @@ export default function ModalAnime({  anime }) {
                 <AiOutlineLoading3Quarters className="animate-spin" />
               </span>
             )}
-            <div className="flex flex-col justify-center items-center">
-              <div className="flex justify-center items-center gap-2  text-orange-500  font-medium ">
+            <div className="flex flex-col justify-center items- max-s:justify-start">
+              <div className="flex justify-center items-center gap-2 max-s:gap-0   text-orange-500  font-medium max-s:justify-start max-s:text-sm">
                 <span className="flex justify-center items-center gap-1">
                   <FaPlay />
                   <h1>
@@ -48,7 +44,7 @@ export default function ModalAnime({  anime }) {
                     {anime.attributes.subtype.slice(1, 5)}
                   </h1>
                 </span>
-                <span className="flex justify-center items-center gap-1 w-30">
+                <span className="flex justify-center items-center gap-1 w-30 max-m:w-25">
                   <FaCalendar />
                   <h1>{anime.attributes.startDate}</h1>
                 </span>
@@ -65,9 +61,9 @@ export default function ModalAnime({  anime }) {
                   <h1>{anime.attributes.episodeLength}m</h1>
                 </span>
               </div>
-              <span className="overflow-y-auto h-100 max-lg:h-50 ">
+              <span className="overflow-y-auto h-100 max-lg:h-60 max-s:h-45 ">
                 <h1
-                  className={`w-60 max-lg:text-lg ${
+                  className={`w-60 text-center max-lg:text-lg max-s:w-50  max-m:w-45 ${
                     anime.attributes.description.length > 200
                       ? "text-lg"
                       : "text-2xl"
@@ -76,27 +72,29 @@ export default function ModalAnime({  anime }) {
                   {anime.attributes.description}
                 </h1>
               </span>
-              {anime.attributes.youtubeVideoId ? (
-                <button className="flex justify-center items-center bg-orange-500 p-2 gap-1 rounded-2xl  text-lg font-medium transition-transform hover:scale-110 active:scale-90 mt-5 max-lg:p-1">
-                  <FaVideo />
-                  <a
-                    target="blanc"
-                    href={`https://www.youtube.com/watch?v=${anime.attributes.youtubeVideoId}`}
-                  >
-                    Watch Trailer
+              <span className="flex flex-col justify-center items-center max-s:justify-start  ">
+                {anime.attributes.youtubeVideoId ? (
+                  <button className="flex justify-center items-center bg-orange-500 p-2 gap-1 rounded-2xl  text-lg font-medium transition-transform hover:scale-110 active:scale-90 mt-5 max-lg:p-1 max-lg:mt-2  ">
+                    <FaVideo />
+                    <a
+                      target="blanc"
+                      href={`https://www.youtube.com/watch?v=${anime.attributes.youtubeVideoId}`}
+                    >
+                      Watch Trailer
+                    </a>
+                  </button>
+                ) : (
+                  <h1 className="text-lg mt-5 bg-amber-600 p-2 rounded-2xl text-center max-lg:p-1  max-lg:mt-1">
+                    Can't Find A Trailer
+                  </h1>
+                )}
+                <button className="flex justify-center items-center bg-orange-500 p-2 gap-1 rounded-2xl  text-lg font-medium transition-transform hover:scale-110 active:scale-90 mt-5 max-lf:mt-2 max-lg:p-1  max-lg:mt-2">
+                  <FaInfoCircle />
+                  <a href={`/info?q=${anime.attributes.canonicalTitle}`}>
+                    View Anime Info
                   </a>
                 </button>
-              ) : (
-                <h1 className="text-lg mt-5 bg-amber-600 p-2 rounded-2xl text-center">
-                  Can't Find A Trailer :(
-                </h1>
-              )}
-              <button className="flex justify-center items-center bg-orange-500 p-2 gap-1 rounded-2xl  text-lg font-medium transition-transform hover:scale-110 active:scale-90 mt-5 max-lf:mt-2 max-lg:p-1">
-                <FaInfoCircle />
-                <a href={`/info?q=${anime.attributes.canonicalTitle}`}>
-                  View Anime Info
-                </a>
-              </button>
+              </span>
             </div>
           </div>
         </div>

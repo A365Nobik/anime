@@ -214,7 +214,7 @@ export default function Page() {
           <h1 className="text-white text-5xl font-medium mb-5 max-xl:text-3xl  ">
             Trending Anime
           </h1>
-          <ul className="grid grid-cols-10 gap-2  justify-center items-center trending-list max-2xl:grid-cols-5 max-lg:grid-cols-4  max-md:grid-cols-3">
+          <ul className="grid grid-cols-10 gap-2  justify-center items-center trending-list max-2xl:grid-cols-5 max-lg:grid-cols-4  max-md:grid-cols-3 max-s:grid-cols-2 ">
             {trendingList && trendingList.length > 0 ? (
               trendingList.map((element) => {
                 return (
