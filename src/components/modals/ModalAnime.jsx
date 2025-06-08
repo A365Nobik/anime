@@ -19,7 +19,7 @@ export default function ModalAnime({ anime }) {
               anime.attributes.canonicalTitle.length <= 20
                 ? "text-4xl"
                 : "text-[18px]"
-            } max-lg:text-2xl`}
+            } max-lg:text-2xl text-center max-s:text-xl`}
           >
             {anime.attributes.canonicalTitle}
           </h1>
@@ -65,7 +65,7 @@ export default function ModalAnime({ anime }) {
                   </span>
                 </div>
               </div>
-              <span className="overflow-y-auto w-max h-100 max-lg:h-60 max-s:h-45 ">
+              <span className="overflow-y-auto w-max h-100 max-lg:h-60 max-sm:h-40">
                 <h1
                   className={`w-60 text-center max-lg:text-lg max-s:w-50  max-m:w-45 max-m:text-left ${
                     anime.attributes.description.length > 200

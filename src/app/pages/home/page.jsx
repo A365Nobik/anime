@@ -131,7 +131,7 @@ export default function Page() {
           currentAnime &&
           currentAnime.attributes ? (
             <>
-              <div className="flex flex-col justify-center items-center ml-5 mt-80 bg-black/50 text-white p-2 rounded-2xl h-60 w-200 max-xl:mt-30 max-xl:w-125 max-md:w-100 max-sm:w-75 max-sm:ml-1 max-x:mt-15">
+              <div className="flex flex-col justify-center items-center ml-5 mt-80 bg-black/50 text-white p-2 rounded-2xl h-60 w-200 max-xl:mt-30 max-xl:w-125 max-md:w-100 max-sm:w-75 max-sm:ml-1 max-x:mt-15 border-2 border-orange-500">
                 <h1 className="text-4xl font-bold max-xl:text-2xl max-sm:text-lg">
                   {currentAnime.attributes.titles.en
                     ? currentAnime.attributes.titles.en

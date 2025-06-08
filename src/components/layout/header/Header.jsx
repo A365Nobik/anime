@@ -24,7 +24,7 @@ export default function Header({ page }) {
         break;
       }
       case "info": {
-        setPageH1(`Info About ${searchParams.get("q").length>40?searchParams.get("q").slice(0,40)+`...`:searchParams.get("q")}`);
+        setPageH1(`Info About ${searchParams.get("q").length>40?searchParams.get("q").slice(0,10)+`...`:searchParams.get("q")}`);
         break;
       }
     }
@@ -49,7 +49,7 @@ export default function Header({ page }) {
           ""
         )}
         <div className="flex justify-center items-center">
-          <h1 className="mr-10 text-3xl font-medium max-xl:text-2xl max-lg:text-xl max-lg:mr-2.5 max-s:mr-0 max-s:text-center max-m:hidden">Search An Anime</h1>
+          <h1 className="mr-5 text-3xl font-medium max-xl:text-2xl max-lg:text-xl max-lg:mr-2.5 max-s:mr-0 max-s:text-center max-m:hidden">Search An Anime</h1>
           <div
             onFocus={() => setFocus(true)}
             onBlur={() => setFocus(false)}
