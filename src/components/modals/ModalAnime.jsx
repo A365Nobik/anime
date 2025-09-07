@@ -6,6 +6,7 @@ import {
   FaInfoCircle,
 } from "react-icons/fa";
 import { AiFillFastForward, AiOutlineLoading3Quarters } from "react-icons/ai";
+import { Link } from "react-router-dom";
 
 export default function ModalAnime({ anime }) {
   return (
@@ -94,9 +95,9 @@ export default function ModalAnime({ anime }) {
                 )}
                 <button className="flex justify-center items-center bg-orange-500 p-2 gap-1 rounded-2xl  text-lg font-medium transition-transform hover:scale-110 active:scale-90 mt-5 max-lf:mt-2 max-lg:p-1  max-lg:mt-2">
                   <FaInfoCircle />
-                  <a href={`/info?q=${anime.attributes.canonicalTitle}`}>
+                  <Link to={`/info?q=${anime.attributes.canonicalTitle}`}>
                     View Anime Info
-                  </a>
+                  </Link>
                 </button>
               </span>
             </div>
@@ -104,7 +105,7 @@ export default function ModalAnime({ anime }) {
         </div>
       ) : (
         <span className="flex justify-center items-center text-5xl text-white font-bold mt-10 gap-2">
-          <h1 className=" r">Anime Data Is Loading</h1>
+          <h1 className="">Anime Data Is Loading</h1>
           <AiOutlineLoading3Quarters className="animate-spin" />
         </span>
       )}

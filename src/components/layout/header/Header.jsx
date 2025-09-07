@@ -1,31 +1,40 @@
 import { useState, useRef, useEffect } from "react";
-import { useSearchParams, useNavigate } from "react-router-dom";
+import { useSearchParams, Link } from "react-router-dom";
 import { FaSearch } from "react-icons/fa";
-export default function Header({ page }) {
+export default function Header() {
   const [headerBg, setHeaderBg] = useState(false);
   const [focus, setFocus] = useState(false);
   const inputRef = useRef(null);
   const [searchParams] = useSearchParams();
   const [pageH1, setPageH1] = useState(``);
-  let navigate = useNavigate();
-
+  const page = location.pathname;
   async function findAnimeName() {
     const value = inputRef.current.value;
-    navigate(`/result?q=${value}`);
+    location.href = `/result?q=${value}`;
   }
+
   useEffect(() => {
     switch (page) {
-      case "home": {
+      case "/": {
         setPageH1("Welcome To Anime Hub");
         break;
       }
-      case "search": {
+      case "/result": {
         setPageH1(`Result For ${searchParams.get("q")}`);
         break;
       }
-      case "info": {
-        setPageH1(`Info About ${searchParams.get("q").length>40?searchParams.get("q").slice(0,10)+`...`:searchParams.get("q")}`);
+      case "/info": {
+        setPageH1(
+          `Info About ${
+            searchParams.get("q").length > 40
+              ? searchParams.get("q").slice(0, 10) + `...`
+              : searchParams.get("q")
+          }`
+        );
         break;
+      }
+      default: {
+        setPageH1("Page not found");
       }
     }
   }, [page, searchParams]);
@@ -34,22 +43,29 @@ export default function Header({ page }) {
       <header
         onMouseEnter={() => setHeaderBg(true)}
         onMouseLeave={() => setHeaderBg(false)}
-        className={` sticky flex  justify-between items-center w-full p-4 text-[#EAEFEF] z-1000 transition-colors duration-500  delay-100 max-md:p-2 max-sm:justify-center  ${
+        className={`loaded sticky flex  justify-between items-center w-full p-4 text-[#EAEFEF] z-1000 transition-colors duration-500  delay-100 max-md:p-2 max-sm:justify-center  ${
           headerBg ? " bg-gray-800" : ""
         } `}
       >
-        <h1 className="text-4xl font-medium text-center max-xl:text-2xl max-lg:text-xl max-md:w-35 max-sm:hidden max-md:hidden">{pageH1}</h1>
-        {page !== "home" ? (
+        <h1 className="text-4xl font-medium text-center max-xl:text-2xl max-lg:text-xl max-md:w-35 max-sm:hidden max-md:hidden">
+          {pageH1}
+        </h1>
+        {page !== "/" ? (
           <>
-            <a className="text-4xl font-medium max-xl:text-2xl max-lg:text-xl max-lg:mr-2.5" href="/">
+            <Link
+              className="text-4xl font-medium max-xl:text-2xl max-lg:text-xl transition-colors max-lg:mr-2.5 hover:text-orange-500"
+              to="/"
+            >
               Home
-            </a>
+            </Link>
           </>
         ) : (
           ""
         )}
         <div className="flex justify-center items-center">
-          <h1 className="mr-5 text-3xl font-medium max-xl:text-2xl max-lg:text-xl max-lg:mr-2.5 max-s:mr-0 max-s:text-center max-m:hidden">Search An Anime</h1>
+          <h1 className="mr-5 text-3xl font-medium max-xl:text-2xl max-lg:text-xl max-lg:mr-2.5 max-s:mr-0 max-s:text-center max-m:hidden">
+            Search An Anime
+          </h1>
           <div
             onFocus={() => setFocus(true)}
             onBlur={() => setFocus(false)}

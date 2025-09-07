@@ -1,11 +1,5 @@
-import {
-  FaCalendar,
-  FaClock,
-  FaVideo,
-  FaPlay,
-  FaInfoCircle,
-} from "react-icons/fa";
-import { AiFillFastForward, AiOutlineLoading3Quarters } from "react-icons/ai";
+import { FaCalendar, FaClock } from "react-icons/fa";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 export default function Episode({ anime, animeCard }) {
   return (
@@ -44,22 +38,30 @@ export default function Episode({ anime, animeCard }) {
             <div className="flex flex-col justify-center items- max-s:justify-start">
               <div className="flex justify-center items-center gap-2 max-m:gap-5   text-orange-500  font-medium max-s:justify-start max-s:text-sm">
                 <div className="flex max-m:flex-col justify-center items-center gap-1">
-                  <span className="flex justify-center items-center gap-1 max-s:gap-0  w-max ">
-                    <FaCalendar />
-                    <h1>{anime?.attributes?.airdate}</h1>
-                  </span>
+                  {anime?.attributes?.airdate ? (
+                    <span className="flex justify-center items-center gap-1 max-s:gap-0  w-max ">
+                      <FaCalendar />
+                      <h1>{anime?.attributes?.airdate}</h1>
+                    </span>
+                  ) : (
+                    ""
+                  )}
                 </div>
                 <div className="flex max-m:flex-col justify-center items-center gap-1">
-                  <span className="flex justify-center items-center gap-1 max-s:gap-0">
-                    <FaClock />
-                    <h1>{anime?.attributes?.length}m</h1>
-                  </span>
+                  {anime?.attributes?.length ? (
+                    <span className="flex justify-center items-center gap-1 max-s:gap-0">
+                      <FaClock />
+                      <h1>{anime?.attributes?.length}m</h1>
+                    </span>
+                  ) : (
+                    ""
+                  )}
                 </div>
               </div>
               <span className="overflow-y-auto w-max h-120 max-lg:h-60 max-s:h-55 ">
                 <h1
                   className={`w-60 text-center max-lg:text-lg max-s:w-50  max-m:w-45 max-m:text-left ${
-                    anime?.attributes?.description.length > 200
+                    anime?.attributes?.description?.length > 200
                       ? "text-lg"
                       : "text-2xl"
                   }`}
