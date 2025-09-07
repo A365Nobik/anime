@@ -137,7 +137,7 @@ Feel free to use and modify within your project.
 npm i
 ```
 
-2. Создать `.env` в корне и указать API сервиса [kitsu](https://kitsu.io/)`:
+2. Создать `.env` в корне и указать API сервиса [kitsu](https://kitsu.io/):
 
 ```bash
 VITE_API_URL=https://kitsu.io/api/edge
